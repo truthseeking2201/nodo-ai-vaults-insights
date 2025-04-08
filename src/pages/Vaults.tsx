@@ -14,7 +14,6 @@ const vaults = [
   {
     id: "vault-111",
     name: "Nodo Stability Vault",
-    code: "111",
     type: "Yield Optimization",
     icon: <Sparkles className="w-5 h-5 text-white" />,
     description: "Designed for stable returns with minimal volatility. This Nodo vault focuses on secure yield generation through proven DeFi strategies, optimized for USDC holders seeking consistent passive income with institutional-grade risk management.",
@@ -64,8 +63,7 @@ const vaults = [
   {
     id: "vault-502",
     name: "Nodo Growth Engine",
-    code: "502",
-    type: "Quant & DeFi",
+    type: "DeFi Analyst",
     icon: <LineChartIcon className="w-5 h-5 text-white" />,
     description: "Nodo's quantitative strategy vault designed for higher returns. Leverages advanced AI algorithms and on-chain analytics to identify optimal trading opportunities across DeFi protocols. Suitable for investors seeking enhanced yield with managed risk exposure.",
     nav: "$105.27",
@@ -110,6 +108,56 @@ const vaults = [
         description: "• 0.5% annual management fee\n• 15% performance fee on profits"
       }
     ]
+  },
+  {
+    id: "vault-703",
+    name: "Nodo Alpha Strategy",
+    type: "Market Maker",
+    icon: <TrendingUp className="w-5 h-5 text-white" />,
+    description: "Advanced trading strategy targeting alpha generation through sophisticated market-making algorithms. This Nodo vault utilizes high-frequency execution with optimized gas and MEV protection to capture spreads across decentralized exchanges.",
+    nav: "$107.89",
+    tvl: "$4,215.65",
+    inception: "03 May 23",
+    apy: "10.2% - 15.8%",
+    risk: "High",
+    color: "bg-nova/20 text-nova",
+    shadow: "shadow-neon-nova",
+    chartColor: "#F43F5E",
+    portfolio: {
+      icon: <BarChart3 className="w-5 h-5 text-white" />,
+      releaseDate: "June 10, 2023"
+    },
+    chain: {
+      name: "Multi-Chain",
+      icon: <div className="w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center text-xs text-white">M</div>
+    },
+    compatibility: [
+      <div key="1" className="w-5 h-5 bg-nova/60 rounded-full flex items-center justify-center text-xs text-white">N</div>,
+      <div key="2" className="w-5 h-5 bg-orion/60 rounded-full flex items-center justify-center text-xs text-white">O</div>,
+      <div key="3" className="w-5 h-5 bg-aero/60 rounded-full flex items-center justify-center text-xs text-white">A</div>
+    ],
+    features: [
+      {
+        title: "MEV Protection",
+        icon: <ShieldCheck className="w-5 h-5 text-nova" />,
+        description: "Advanced protection against frontrunning and sandwich attacks through private transaction channels"
+      },
+      {
+        title: "ML Price Prediction",
+        icon: <Sparkles className="w-5 h-5 text-nova" />,
+        description: "Machine learning models predict short-term price movements to optimize entry and exit points"
+      },
+      {
+        title: "Automated Rebalancing",
+        icon: <Layers className="w-5 h-5 text-nova" />,
+        description: "Strategy automatically adjusts position sizes based on market volatility and liquidity conditions"
+      },
+      {
+        title: "Premium Fee Structure",
+        icon: <CircleDollarSign className="w-5 h-5 text-nova" />,
+        description: "• 1% annual management fee\n• 20% performance fee on profits"
+      }
+    ]
   }
 ];
 
@@ -138,7 +186,9 @@ const Vaults = () => {
                       ? `bg-gradient-to-r ${
                           vault.id === "vault-111" 
                             ? "from-aero/90 to-aero/70"
-                            : "from-orion/90 to-orion/70"
+                            : vault.id === "vault-502"
+                            ? "from-orion/90 to-orion/70"
+                            : "from-nova/90 to-nova/70"
                         } text-white shadow-lg` 
                       : "hover:bg-white/5"
                   }`}
@@ -148,8 +198,8 @@ const Vaults = () => {
                     {vault.icon}
                   </div>
                   <div className="text-left">
-                    <div className="text-xs opacity-70">nodo {vault.code}</div>
-                    <div className="font-medium text-sm">{vault.type}</div>
+                    <div className="text-xs opacity-70">{vault.type}</div>
+                    <div className="font-medium text-sm">{vault.name}</div>
                   </div>
                 </button>
               ))}

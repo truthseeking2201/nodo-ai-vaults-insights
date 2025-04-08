@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 // Vault Card Component
 const VaultCard = ({
   name,
+  type,
   icon,
   description,
   apy,
@@ -16,6 +17,7 @@ const VaultCard = ({
   highlight
 }: {
   name: string;
+  type: string;
   icon: React.ReactNode;
   description: string;
   apy: string;
@@ -41,6 +43,10 @@ const VaultCard = ({
         <div>
           <div className="text-sm text-white/60">Expected APY</div>
           <div className="text-lg font-bold font-mono">{apy}</div>
+        </div>
+        <div>
+          <div className="text-sm text-white/60">Type</div>
+          <div className="text-sm font-medium">{type}</div>
         </div>
       </div>
       
@@ -84,6 +90,7 @@ const VaultsSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <VaultCard
             name="Nodo Growth Engine"
+            type="DeFi Analyst"
             icon={<LineChart className="w-5 h-5 text-white" />}
             description="Nodo's quantitative strategy leveraging AI analytics for higher returns across DeFi protocols."
             apy="8.6% - 12.4%"
@@ -94,6 +101,7 @@ const VaultsSection = () => {
           
           <VaultCard
             name="Nodo Stability Vault"
+            type="Yield Optimization"
             icon={<Sparkles className="w-5 h-5 text-white" />}
             description="Designed for stable returns with minimal volatility. Focused on secure yield generation."
             apy="5.8% - 8.4%"
@@ -102,10 +110,11 @@ const VaultsSection = () => {
           />
           
           <VaultCard
-            name="Nodo Capital Preservation"
-            icon={<ShieldCheck className="w-5 h-5 text-white" />}
-            description="Low-risk strategies focusing on capital preservation with steady, consistent growth."
-            apy="3.8% - 6.2%"
+            name="Nodo Alpha Strategy"
+            type="Market Maker"
+            icon={<TrendingUp className="w-5 h-5 text-white" />}
+            description="Advanced trading strategy targeting alpha generation through sophisticated market-making algorithms."
+            apy="10.2% - 15.8%"
             color="bg-orion/20 text-orion"
             shadow="shadow-neon-orion"
           />

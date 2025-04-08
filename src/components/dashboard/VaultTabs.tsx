@@ -57,7 +57,7 @@ const VaultTabs: React.FC<VaultTabsProps> = ({ vaults, selectedAgent, onOpenDepo
                   <LineChart className="w-5 h-5 text-aero" />
                 </div>
                 <div>
-                  <div className="text-xs opacity-70">nodo 111</div>
+                  <div className="text-xs opacity-70">Yield Optimization</div>
                   <h3 className="font-bold">Nodo Stability Vault</h3>
                 </div>
               </div>
@@ -87,7 +87,7 @@ const VaultTabs: React.FC<VaultTabsProps> = ({ vaults, selectedAgent, onOpenDepo
                   <BarChart3 className="w-5 h-5 text-orion" />
                 </div>
                 <div>
-                  <div className="text-xs opacity-70">nodo 502</div>
+                  <div className="text-xs opacity-70">DeFi Analyst</div>
                   <h3 className="font-bold">Nodo Growth Engine</h3>
                 </div>
               </div>
