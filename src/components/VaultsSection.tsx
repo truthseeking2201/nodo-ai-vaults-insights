@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, LineChart, Sparkles } from 'lucide-react';
+import { ArrowRight, LineChart, Sparkles, ShieldCheck, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 // Vault Card Component
@@ -12,7 +12,8 @@ const VaultCard = ({
   description,
   apy,
   color,
-  shadow
+  shadow,
+  highlight
 }: {
   name: string;
   icon: React.ReactNode;
@@ -20,13 +21,17 @@ const VaultCard = ({
   apy: string;
   color: string;
   shadow: string;
+  highlight?: boolean;
 }) => {
   return (
-    <Card className={`glass-card p-6 rounded-xl group hover-scale ${shadow}`}>
+    <Card className={`glass-card p-6 rounded-xl group hover-scale ${shadow} ${highlight ? 'border-' + color + '/30' : 'border-white/10'} transition-all duration-300`}>
       <div className="flex justify-between items-center mb-4">
         <div className={`w-10 h-10 rounded-full flex items-center justify-center ${color}`}>
           {icon}
         </div>
+        {highlight && (
+          <span className={`px-3 py-1 rounded-full text-xs ${color} bg-white/10`}>Featured</span>
+        )}
       </div>
       
       <h3 className="text-xl font-bold mb-2">{name}</h3>
@@ -41,11 +46,12 @@ const VaultCard = ({
       
       <Button 
         variant="outline" 
-        className="w-full bg-transparent border border-white/20 hover:bg-white/10 text-white"
+        className={`w-full bg-transparent border border-white/20 hover:bg-white/10 hover:border-${color} text-white group-hover:text-${color} transition-all`}
         asChild
       >
         <Link to={`/vaults`}>
-          Learn More
+          <span>Learn More</span>
+          <ArrowRight size={16} className="ml-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
         </Link>
       </Button>
     </Card>
@@ -54,13 +60,19 @@ const VaultCard = ({
 
 const VaultsSection = () => {
   return (
-    <div className="py-16 px-6 md:px-12">
-      <div className="container mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+    <div className="py-16 px-6 md:px-12 relative">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+      </div>
+      
+      <div className="container mx-auto relative z-10">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12">
           <div>
             <h2 className="text-2xl md:text-3xl font-bold mb-2">Popular Vaults</h2>
-            <p className="text-white/70">
-              Discover our top-performing AI-powered investment strategies
+            <p className="text-white/70 max-w-xl">
+              Discover our top-performing AI-powered investment strategies with built-in risk management
             </p>
           </div>
           <Link to="/vaults" className="group flex items-center gap-2 py-2 mt-4 md:mt-0 text-white hover:text-nova transition-colors">
@@ -69,30 +81,31 @@ const VaultsSection = () => {
           </Link>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <VaultCard
             name="Market Making"
             icon={<LineChart className="w-5 h-5 text-white" />}
-            description="Automated liquidity management with market-making strategies."
+            description="Automated liquidity management with market-making strategies across exchanges."
             apy="7.2% - 9.8%"
             color="bg-nova/20 text-nova"
             shadow="shadow-neon-nova"
+            highlight={true}
           />
           
           <VaultCard
             name="Yield Optimization"
             icon={<Sparkles className="w-5 h-5 text-white" />}
-            description="Maximize returns across DeFi protocols and yield pools."
+            description="Maximize returns across DeFi protocols and yield pools with AI rebalancing."
             apy="5.8% - 8.4%"
             color="bg-aero/20 text-aero"
             shadow="shadow-neon-aero"
           />
           
           <VaultCard
-            name="Stablecoin Yield"
-            icon={<LineChart className="w-5 h-5 text-white" />}
-            description="Low-risk strategies focusing on stablecoin liquidity pools."
-            apy="3.8% - 5.2%"
+            name="Risk-Managed Growth"
+            icon={<TrendingUp className="w-5 h-5 text-white" />}
+            description="Low-risk strategies focusing on capital preservation with steady growth."
+            apy="3.8% - 6.2%"
             color="bg-orion/20 text-orion"
             shadow="shadow-neon-orion"
           />
