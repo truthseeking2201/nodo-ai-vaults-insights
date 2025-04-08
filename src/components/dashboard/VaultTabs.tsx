@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import VaultCard from './VaultCard';
+import { LineChart, BarChart3, ChevronRight } from 'lucide-react';
 
 interface VaultTabsProps {
   vaults: any[];
@@ -32,16 +33,89 @@ const VaultTabs: React.FC<VaultTabsProps> = ({ vaults, selectedAgent, onOpenDepo
             />
           ))}
         </div>
+
+        <div className="mt-6 text-center">
+          <Button 
+            variant="outline" 
+            className="bg-transparent border-white/20 hover:bg-white/10 text-white"
+            asChild
+          >
+            <Link to="/vaults" className="flex items-center gap-2">
+              <span>Explore All Vaults</span>
+              <ChevronRight className="w-4 h-4" />
+            </Link>
+          </Button>
+        </div>
       </TabsContent>
       
       <TabsContent value="all">
-        <Card className="glass-card p-6 rounded-xl text-center py-12">
-          <h3 className="text-xl font-semibold mb-2">Explore All Vaults</h3>
-          <p className="text-white/70 mb-4">Discover more investment opportunities with our specialized AI vaults</p>
-          <Button className="bg-gradient-to-r from-nova to-aero" asChild>
-            <Link to="/vaults">Browse All Vaults</Link>
-          </Button>
-        </Card>
+        <div className="grid gap-6">
+          <Card className="glass-card p-6 rounded-xl border border-white/10 hover-scale transition-all">
+            <div className="flex justify-between items-center mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-aero/20 flex items-center justify-center">
+                  <LineChart className="w-5 h-5 text-aero" />
+                </div>
+                <div>
+                  <div className="text-xs opacity-70">ātv 111</div>
+                  <h3 className="font-bold">Yield Optimization</h3>
+                </div>
+              </div>
+              <span className="text-aero font-mono">5.8% - 8.4% APY</span>
+            </div>
+            <p className="text-white/70 text-sm mb-6 line-clamp-2">
+              Designed to optimize yield for stable coin holders - focusing on USDC holders.
+            </p>
+            <div className="flex justify-between items-center">
+              <div>
+                <div className="text-xs text-white/60">TVL</div>
+                <div className="font-mono font-semibold">$28,715.31</div>
+              </div>
+              <Button variant="outline" className="border-aero/50 text-aero hover:bg-aero/10" asChild>
+                <Link to="/vaults" className="flex items-center gap-2">
+                  View Details
+                  <ChevronRight className="w-4 h-4" />
+                </Link>
+              </Button>
+            </div>
+          </Card>
+          
+          <Card className="glass-card p-6 rounded-xl border border-white/10 hover-scale transition-all">
+            <div className="flex justify-between items-center mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-orion/20 flex items-center justify-center">
+                  <BarChart3 className="w-5 h-5 text-orion" />
+                </div>
+                <div>
+                  <div className="text-xs opacity-70">ātv 502</div>
+                  <h3 className="font-bold">Quant & DeFi</h3>
+                </div>
+              </div>
+              <span className="text-orion font-mono">8.6% - 12.4% APY</span>
+            </div>
+            <p className="text-white/70 text-sm mb-6 line-clamp-2">
+              Data-driven insights and automated trading based on on-chain analytics.
+            </p>
+            <div className="flex justify-between items-center">
+              <div>
+                <div className="text-xs text-white/60">TVL</div>
+                <div className="font-mono font-semibold">$6,432.80</div>
+              </div>
+              <Button variant="outline" className="border-orion/50 text-orion hover:bg-orion/10" asChild>
+                <Link to="/vaults" className="flex items-center gap-2">
+                  View Details
+                  <ChevronRight className="w-4 h-4" />
+                </Link>
+              </Button>
+            </div>
+          </Card>
+          
+          <div className="text-center py-4">
+            <Button className="bg-gradient-to-r from-nova to-aero" asChild>
+              <Link to="/vaults">Browse All Vaults</Link>
+            </Button>
+          </div>
+        </div>
       </TabsContent>
       
       <TabsContent value="analytics">
