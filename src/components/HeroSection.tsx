@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from 'lucide-react';
@@ -31,8 +30,9 @@ const HeroSection = () => {
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <Button 
               className="bg-nova hover:bg-nova/90 text-white px-8 py-6 rounded-md transition-all shadow-neon-nova"
+              asChild
             >
-              Launch App
+              <Link to="/dashboard">Launch App</Link>
             </Button>
             <Link to="/explore-strategies" className="group flex items-center gap-2 py-2 text-white hover:text-nova transition-colors">
               Explore Strategies

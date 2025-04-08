@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
@@ -36,7 +35,7 @@ const CtaSection = () => {
               className="bg-transparent border border-white/20 hover:bg-white/10 text-white px-8 py-6"
               asChild
             >
-              <a href="#" target="_blank" rel="noopener noreferrer">Read Documentation</a>
+              <a href="https://docs.nodoai.com" target="_blank" rel="noopener noreferrer">Read Documentation</a>
             </Button>
           </div>
           
