@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Menu, X, LineChart, Activity, Wallet, LayoutDashboard } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -36,44 +36,10 @@ const Navbar = () => {
             >
               Vaults
             </Link>
-            <Link 
-              to="/analytics"
-              className={cn(
-                "text-sm transition-colors hover:text-nova",
-                isActive("/analytics") ? "text-nova" : "text-white/70"
-              )}
-            >
-              Analytics
-            </Link>
-            <Link 
-              to="/activity"
-              className={cn(
-                "text-sm transition-colors hover:text-nova",
-                isActive("/activity") ? "text-nova" : "text-white/70"
-              )}
-            >
-              Activity
-            </Link>
-            <Link 
-              to="/dashboard"
-              className={cn(
-                "text-sm transition-colors hover:text-nova",
-                isActive("/dashboard") ? "text-nova" : "text-white/70"
-              )}
-            >
-              Dashboard
-            </Link>
-            <Link 
-              to="/transactions"
-              className={cn(
-                "text-sm transition-colors hover:text-nova",
-                isActive("/transactions") ? "text-nova" : "text-white/70"
-              )}
-            >
-              Transactions
-            </Link>
             <a 
-              href="#"
+              href="https://docs.nodoai.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-sm text-white/70 transition-colors hover:text-nova"
             >
               Docs
@@ -109,43 +75,12 @@ const Navbar = () => {
               onClick={() => setIsMenuOpen(false)}
               className="flex items-center gap-3 text-lg text-white hover:text-nova transition-colors"
             >
-              <LineChart size={20} />
               <span>Vaults</span>
             </Link>
-            <Link 
-              to="/analytics"
-              onClick={() => setIsMenuOpen(false)}
-              className="flex items-center gap-3 text-lg text-white hover:text-nova transition-colors"
-            >
-              <LineChart size={20} />
-              <span>Analytics</span>
-            </Link>
-            <Link 
-              to="/activity"
-              onClick={() => setIsMenuOpen(false)}
-              className="flex items-center gap-3 text-lg text-white hover:text-nova transition-colors"
-            >
-              <Activity size={20} />
-              <span>Activity</span>
-            </Link>
-            <Link 
-              to="/dashboard"
-              onClick={() => setIsMenuOpen(false)}
-              className="flex items-center gap-3 text-lg text-white hover:text-nova transition-colors"
-            >
-              <LayoutDashboard size={20} />
-              <span>Dashboard</span>
-            </Link>
-            <Link 
-              to="/transactions"
-              onClick={() => setIsMenuOpen(false)}
-              className="flex items-center gap-3 text-lg text-white hover:text-nova transition-colors"
-            >
-              <Wallet size={20} />
-              <span>Transactions</span>
-            </Link>
             <a 
-              href="#"
+              href="https://docs.nodoai.com"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => setIsMenuOpen(false)}
               className="flex items-center gap-3 text-lg text-white hover:text-nova transition-colors"
             >
