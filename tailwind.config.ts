@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,25 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// NODO AI Custom Colors
+				"nodo-dark": "#1A1F2C",
+				"nodo-darker": "#121520",
+				nova: {
+					DEFAULT: "#9b87f5",
+					light: "#d6bcfa",
+					dark: "#6E59A5",
+				},
+				orion: {
+					DEFAULT: "#F97316",
+					light: "#FDBA74",
+					dark: "#C2410C",
+				},
+				aero: {
+					DEFAULT: "#10B981",
+					light: "#6EE7B7",
+					dark: "#047857",
+				},
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,13 +103,52 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'pulse-glow': {
+					'0%, 100%': { opacity: '1', filter: 'brightness(1)' },
+					'50%': { opacity: '0.8', filter: 'brightness(1.2)' }
+				},
+				'float': {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-10px)' }
+				},
+				'scale-up': {
+					'0%': { transform: 'scale(0.95)', opacity: '0' },
+					'100%': { transform: 'scale(1)', opacity: '1' }
+				},
+				'shimmer': {
+					'0%': { backgroundPosition: '-200% 0' },
+					'100%': { backgroundPosition: '200% 0' }
+				},
+				'neon-pulse': {
+					'0%, 100%': { boxShadow: '0 0 5px rgba(155, 135, 245, 0.8), 0 0 10px rgba(155, 135, 245, 0.5)' },
+					'50%': { boxShadow: '0 0 10px rgba(155, 135, 245, 1), 0 0 20px rgba(155, 135, 245, 0.8)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'pulse-glow': 'pulse-glow 2s infinite ease-in-out',
+				'float': 'float 6s infinite ease-in-out',
+				'scale-up': 'scale-up 0.3s ease-out forwards',
+				'shimmer': 'shimmer 3s infinite linear',
+				'neon-pulse': 'neon-pulse 2s infinite'
+			},
+			backgroundImage: {
+				'neo-grid': 'linear-gradient(rgba(155, 135, 245, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(155, 135, 245, 0.1) 1px, transparent 1px)',
+				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+			},
+			backgroundSize: {
+				'neo-grid': '30px 30px',
+			},
+			boxShadow: {
+				'neon-glow': '0 0 5px rgba(155, 135, 245, 0.8), 0 0 10px rgba(155, 135, 245, 0.5)',
+				'neon-nova': '0 0 5px rgba(155, 135, 245, 0.8), 0 0 10px rgba(155, 135, 245, 0.5)',
+				'neon-orion': '0 0 5px rgba(249, 115, 22, 0.8), 0 0 10px rgba(249, 115, 22, 0.5)',
+				'neon-aero': '0 0 5px rgba(16, 185, 129, 0.8), 0 0 10px rgba(16, 185, 129, 0.5)',
+			},
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
 } satisfies Config;
+
