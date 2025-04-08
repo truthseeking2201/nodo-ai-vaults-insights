@@ -1,10 +1,104 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { LineChart, Sparkles, TrendingUp } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { LineChart, Sparkles, TrendingUp, X, BarChart3, PieChart } from 'lucide-react';
+import { Link } from 'react-router-dom';
+
+// Vault Detail Dialog Component
+const VaultDetailDialog = ({ 
+  vault, 
+  isOpen, 
+  onClose 
+}: { 
+  vault: any, 
+  isOpen: boolean, 
+  onClose: () => void 
+}) => {
+  if (!vault) return null;
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-[600px] bg-nodo-darker border border-white/10 text-white">
+        <DialogHeader>
+          <div className="flex items-center mb-2">
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-2 ${vault.color}`}>
+              {vault.icon}
+            </div>
+            <DialogTitle className="text-xl">{vault.name}</DialogTitle>
+          </div>
+          <DialogDescription className="text-white/70">
+            {vault.description}
+          </DialogDescription>
+        </DialogHeader>
+        
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="bg-white/5 p-4 rounded-lg">
+            <div className="text-sm text-white/60 mb-1">APY</div>
+            <div className="text-xl font-bold">{vault.apy}</div>
+          </div>
+          <div className="bg-white/5 p-4 rounded-lg">
+            <div className="text-sm text-white/60 mb-1">TVL</div>
+            <div className="text-xl font-bold">{vault.tvl}</div>
+          </div>
+        </div>
+        
+        <div className="bg-white/5 p-4 rounded-lg mb-4">
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="font-medium">Performance History</h3>
+            <div className="flex items-center text-xs text-white/60 gap-2">
+              <span className="flex items-center gap-1">
+                <div className="w-2 h-2 bg-nova rounded-full"></div>
+                Returns
+              </span>
+              <span className="flex items-center gap-1">
+                <div className="w-2 h-2 bg-aero rounded-full"></div>
+                Benchmark
+              </span>
+            </div>
+          </div>
+          <div className="h-32 flex items-center justify-center">
+            <BarChart3 className="w-full h-full text-white/20" />
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="bg-white/5 p-4 rounded-lg">
+            <h3 className="text-sm text-white/60 mb-2">Asset Allocation</h3>
+            <div className="flex justify-center">
+              <PieChart className="h-20 w-20 text-white/20" />
+            </div>
+          </div>
+          <div className="bg-white/5 p-4 rounded-lg">
+            <h3 className="text-sm text-white/60 mb-2">Risk Level</h3>
+            <div className="mt-2 flex flex-col items-center">
+              <div className="w-full bg-white/10 h-2 rounded-full mb-2">
+                <div 
+                  className={`h-full rounded-full ${
+                    vault.risk === "Low" ? "w-1/4 bg-aero" :
+                    vault.risk === "Low-Medium" ? "w-2/5 bg-aero" :
+                    vault.risk === "Medium" ? "w-1/2 bg-nova" :
+                    vault.risk === "Medium-High" ? "w-3/4 bg-orion" :
+                    "w-full bg-orion"
+                  }`}
+                ></div>
+              </div>
+              <div className="text-sm">{vault.risk}</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4">
+          <Button className="w-full bg-nova hover:bg-nova/90 text-white" asChild>
+            <Link to="/dashboard">Invest in Vault</Link>
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
 const VaultCard = ({
   name,
@@ -14,7 +108,8 @@ const VaultCard = ({
   tvl,
   risk,
   color,
-  shadow
+  shadow,
+  onViewDetails
 }: {
   name: string;
   icon: React.ReactNode;
@@ -24,6 +119,7 @@ const VaultCard = ({
   risk: string;
   color: string;
   shadow: string;
+  onViewDetails: () => void;
 }) => {
   return (
     <Card className={`glass-card p-6 rounded-xl group hover-scale ${shadow}`}>
@@ -51,6 +147,7 @@ const VaultCard = ({
       <Button 
         variant="outline" 
         className="w-full bg-transparent border border-white/20 hover:bg-white/10 text-white"
+        onClick={onViewDetails}
       >
         View Vault
       </Button>
@@ -59,6 +156,9 @@ const VaultCard = ({
 };
 
 const Vaults = () => {
+  const [selectedVault, setSelectedVault] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  
   const vaults = [
     {
       name: "Market Making Vault",
@@ -122,6 +222,15 @@ const Vaults = () => {
     }
   ];
 
+  const handleViewVault = (vault) => {
+    setSelectedVault(vault);
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+  };
+
   return (
     <div className="min-h-screen bg-nodo-darker text-white">
       <Navbar />
@@ -138,13 +247,23 @@ const Vaults = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {vaults.map((vault, index) => (
-                <VaultCard key={index} {...vault} />
+                <VaultCard 
+                  key={index} 
+                  {...vault} 
+                  onViewDetails={() => handleViewVault(vault)}
+                />
               ))}
             </div>
           </div>
         </div>
       </main>
       <Footer />
+      
+      <VaultDetailDialog 
+        vault={selectedVault} 
+        isOpen={dialogOpen} 
+        onClose={handleCloseDialog}
+      />
     </div>
   );
 };
