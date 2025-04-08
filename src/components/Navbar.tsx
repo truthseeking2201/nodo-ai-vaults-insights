@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sparkles } from "lucide-react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -35,6 +35,18 @@ const Navbar = () => {
               )}
             >
               Vaults
+            </Link>
+            <Link 
+              to="/explore-strategies"
+              className={cn(
+                "text-sm transition-colors hover:text-nova",
+                isActive("/explore-strategies") ? "text-nova" : "text-white/70"
+              )}
+            >
+              <div className="flex items-center gap-1">
+                <Sparkles className="h-3 w-3" />
+                <span>Explore Strategies</span>
+              </div>
             </Link>
             <a 
               href="https://docs.nodoai.com"
@@ -76,6 +88,14 @@ const Navbar = () => {
               className="flex items-center gap-3 text-lg text-white hover:text-nova transition-colors"
             >
               <span>Vaults</span>
+            </Link>
+            <Link 
+              to="/explore-strategies"
+              onClick={() => setIsMenuOpen(false)}
+              className="flex items-center gap-3 text-lg text-white hover:text-nova transition-colors"
+            >
+              <Sparkles className="h-4 w-4" />
+              <span>Explore Strategies</span>
             </Link>
             <a 
               href="https://docs.nodoai.com"

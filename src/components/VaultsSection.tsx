@@ -69,10 +69,16 @@ const VaultsSection = () => {
               Our specialized vaults leverage advanced AI agents to execute strategies with precision and efficiency.
             </p>
           </div>
-          <Link to="/vaults" className="group flex items-center gap-2 py-2 mt-4 md:mt-0 text-white hover:text-nova transition-colors">
-            View All Vaults
-            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-          </Link>
+          <div className="flex gap-4 mt-4 md:mt-0">
+            <Link to="/vaults" className="group flex items-center gap-2 py-2 text-white hover:text-nova transition-colors">
+              View All Vaults
+              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <Link to="/explore-strategies" className="group flex items-center gap-2 py-2 text-white hover:text-nova transition-colors">
+              <Sparkles size={16} />
+              Explore Strategies
+            </Link>
+          </div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
