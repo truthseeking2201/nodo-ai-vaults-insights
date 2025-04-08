@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
+import { Link } from 'react-router-dom';
 
 const CtaSection = () => {
   return (
@@ -25,15 +26,17 @@ const CtaSection = () => {
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Button 
               className="bg-nova hover:bg-nova/90 text-white px-8 py-6 rounded-md transition-all shadow-neon-nova"
+              asChild
             >
-              Launch App
+              <Link to="/dashboard">Launch App</Link>
             </Button>
             
             <Button 
               variant="outline"
               className="bg-transparent border border-white/20 hover:bg-white/10 text-white px-8 py-6"
+              asChild
             >
-              Read Documentation
+              <a href="#" target="_blank" rel="noopener noreferrer">Read Documentation</a>
             </Button>
           </div>
           

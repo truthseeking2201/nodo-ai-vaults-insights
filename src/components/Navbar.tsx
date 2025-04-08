@@ -1,100 +1,165 @@
 
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from 'lucide-react';
+import { Menu, X, LineChart, Activity, Wallet, LayoutDashboard } from "lucide-react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+  const location = useLocation();
+  
+  const isActive = (path: string) => {
+    return location.pathname === path;
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 py-4 px-6 md:px-12 backdrop-blur-md bg-black/30 border-b border-white/10">
-      <div className="container mx-auto flex justify-between items-center">
-        <Link to="/" className="flex items-center">
-          <h1 className="text-2xl font-bold text-gradient">NODO AI</h1>
-        </Link>
-
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-6">
-          <Link to="/vaults" className="text-sm text-white/80 hover:text-white transition-colors">
-            Vaults
+    <header className="absolute top-0 left-0 right-0 z-50">
+      <nav className="px-6 md:px-12 py-4 backdrop-blur-md bg-nodo-darker/80 border-b border-white/10">
+        <div className="container mx-auto flex items-center justify-between">
+          {/* Logo */}
+          <Link to="/" className="flex items-center">
+            <span className="text-xl font-bold tracking-tight text-white">
+              NODO
+              <span className="text-nova ml-0.5">AI</span>
+            </span>
           </Link>
-          <Link to="/analytics" className="text-sm text-white/80 hover:text-white transition-colors">
-            Analytics
-          </Link>
-          <Link to="/activity" className="text-sm text-white/80 hover:text-white transition-colors">
-            Activity
-          </Link>
-          <Link to="/docs" className="text-sm text-white/80 hover:text-white transition-colors">
-            Docs
-          </Link>
-        </div>
-
-        <div className="hidden md:block">
-          <Button 
-            variant="outline"
-            className="bg-transparent border border-nova hover:bg-nova/20 text-white transition-all duration-300"
-          >
-            Launch App
-          </Button>
-        </div>
-
-        {/* Mobile menu button */}
-        <button
-          className="md:hidden text-white focus:outline-none"
-          onClick={toggleMenu}
-        >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
-
-      {/* Mobile Navigation */}
-      {isMenuOpen && (
-        <div className="md:hidden glass-panel mt-2 mx-4 p-4 rounded-lg animate-scale-up">
-          <div className="flex flex-col space-y-4">
+          
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center space-x-8">
             <Link 
-              to="/vaults" 
-              className="py-2 text-white/80 hover:text-white transition-colors"
-              onClick={() => setIsMenuOpen(false)}
+              to="/vaults"
+              className={cn(
+                "text-sm transition-colors hover:text-nova",
+                isActive("/vaults") ? "text-nova" : "text-white/70"
+              )}
             >
               Vaults
             </Link>
             <Link 
-              to="/analytics" 
-              className="py-2 text-white/80 hover:text-white transition-colors"
-              onClick={() => setIsMenuOpen(false)}
+              to="/analytics"
+              className={cn(
+                "text-sm transition-colors hover:text-nova",
+                isActive("/analytics") ? "text-nova" : "text-white/70"
+              )}
             >
               Analytics
             </Link>
             <Link 
-              to="/activity" 
-              className="py-2 text-white/80 hover:text-white transition-colors"
-              onClick={() => setIsMenuOpen(false)}
+              to="/activity"
+              className={cn(
+                "text-sm transition-colors hover:text-nova",
+                isActive("/activity") ? "text-nova" : "text-white/70"
+              )}
             >
               Activity
             </Link>
             <Link 
-              to="/docs" 
-              className="py-2 text-white/80 hover:text-white transition-colors"
-              onClick={() => setIsMenuOpen(false)}
+              to="/dashboard"
+              className={cn(
+                "text-sm transition-colors hover:text-nova",
+                isActive("/dashboard") ? "text-nova" : "text-white/70"
+              )}
+            >
+              Dashboard
+            </Link>
+            <Link 
+              to="/transactions"
+              className={cn(
+                "text-sm transition-colors hover:text-nova",
+                isActive("/transactions") ? "text-nova" : "text-white/70"
+              )}
+            >
+              Transactions
+            </Link>
+            <a 
+              href="#"
+              className="text-sm text-white/70 transition-colors hover:text-nova"
             >
               Docs
-            </Link>
-            <Button 
-              variant="outline"
-              className="w-full bg-transparent border border-nova hover:bg-nova/20 text-white transition-all duration-300"
-              onClick={() => setIsMenuOpen(false)}
-            >
+            </a>
+          </div>
+          
+          {/* CTA Button */}
+          <div className="hidden lg:block">
+            <Button className="bg-nova hover:bg-nova/90 text-white">
               Launch App
             </Button>
           </div>
+          
+          {/* Mobile Menu Button */}
+          <div className="lg:hidden">
+            <button
+              className="text-white p-2"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
+        </div>
+      </nav>
+      
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 top-16 bg-nodo-darker/95 backdrop-blur-md p-6 lg:hidden z-40">
+          <div className="flex flex-col space-y-6">
+            <Link 
+              to="/vaults"
+              onClick={() => setIsMenuOpen(false)}
+              className="flex items-center gap-3 text-lg text-white hover:text-nova transition-colors"
+            >
+              <LineChart size={20} />
+              <span>Vaults</span>
+            </Link>
+            <Link 
+              to="/analytics"
+              onClick={() => setIsMenuOpen(false)}
+              className="flex items-center gap-3 text-lg text-white hover:text-nova transition-colors"
+            >
+              <LineChart size={20} />
+              <span>Analytics</span>
+            </Link>
+            <Link 
+              to="/activity"
+              onClick={() => setIsMenuOpen(false)}
+              className="flex items-center gap-3 text-lg text-white hover:text-nova transition-colors"
+            >
+              <Activity size={20} />
+              <span>Activity</span>
+            </Link>
+            <Link 
+              to="/dashboard"
+              onClick={() => setIsMenuOpen(false)}
+              className="flex items-center gap-3 text-lg text-white hover:text-nova transition-colors"
+            >
+              <LayoutDashboard size={20} />
+              <span>Dashboard</span>
+            </Link>
+            <Link 
+              to="/transactions"
+              onClick={() => setIsMenuOpen(false)}
+              className="flex items-center gap-3 text-lg text-white hover:text-nova transition-colors"
+            >
+              <Wallet size={20} />
+              <span>Transactions</span>
+            </Link>
+            <a 
+              href="#"
+              onClick={() => setIsMenuOpen(false)}
+              className="flex items-center gap-3 text-lg text-white hover:text-nova transition-colors"
+            >
+              <span>Docs</span>
+            </a>
+            <div className="pt-6">
+              <Button className="w-full bg-nova hover:bg-nova/90 text-white">
+                Launch App
+              </Button>
+            </div>
+          </div>
         </div>
       )}
-    </nav>
+    </header>
   );
 };
 
