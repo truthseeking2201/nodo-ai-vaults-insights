@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -36,18 +36,6 @@ const Navbar = () => {
             >
               Vaults
             </Link>
-            <Link 
-              to="/explore-strategies"
-              className={cn(
-                "text-sm transition-colors hover:text-nova",
-                isActive("/explore-strategies") ? "text-nova" : "text-white/70"
-              )}
-            >
-              <div className="flex items-center gap-1">
-                <Sparkles className="h-3 w-3" />
-                <span>Explore Strategies</span>
-              </div>
-            </Link>
             <a 
               href="https://docs.nodoai.com"
               target="_blank"
@@ -60,8 +48,8 @@ const Navbar = () => {
           
           {/* CTA Button */}
           <div className="hidden lg:block">
-            <Button className="bg-nova hover:bg-nova/90 text-white">
-              Launch App
+            <Button className="bg-nova hover:bg-nova/90 text-white" asChild>
+              <Link to="/dashboard">Launch App</Link>
             </Button>
           </div>
           
@@ -89,14 +77,6 @@ const Navbar = () => {
             >
               <span>Vaults</span>
             </Link>
-            <Link 
-              to="/explore-strategies"
-              onClick={() => setIsMenuOpen(false)}
-              className="flex items-center gap-3 text-lg text-white hover:text-nova transition-colors"
-            >
-              <Sparkles className="h-4 w-4" />
-              <span>Explore Strategies</span>
-            </Link>
             <a 
               href="https://docs.nodoai.com"
               target="_blank"
@@ -107,8 +87,8 @@ const Navbar = () => {
               <span>Docs</span>
             </a>
             <div className="pt-6">
-              <Button className="w-full bg-nova hover:bg-nova/90 text-white">
-                Launch App
+              <Button className="w-full bg-nova hover:bg-nova/90 text-white" asChild>
+                <Link to="/dashboard" onClick={() => setIsMenuOpen(false)}>Launch App</Link>
               </Button>
             </div>
           </div>
