@@ -18,7 +18,7 @@ const VaultTabs: React.FC<VaultTabsProps> = ({ vaults, selectedAgent, onOpenDepo
     <Tabs defaultValue="active" className="mb-8">
       <TabsList className="bg-nodo-dark border border-white/10 mb-4">
         <TabsTrigger value="active" className="data-[state=active]:bg-white/10 data-[state=active]:text-white">Active Vaults</TabsTrigger>
-        <TabsTrigger value="all" className="data-[state=active]:bg-white/10 data-[state=active]:text-white">All Vaults</TabsTrigger>
+        <TabsTrigger value="all" className="data-[state=active]:bg-white/10 data-[state=active]:text-white">All Nodo Vaults</TabsTrigger>
         <TabsTrigger value="analytics" className="data-[state=active]:bg-white/10 data-[state=active]:text-white">Analytics</TabsTrigger>
       </TabsList>
       
@@ -41,7 +41,7 @@ const VaultTabs: React.FC<VaultTabsProps> = ({ vaults, selectedAgent, onOpenDepo
             asChild
           >
             <Link to="/vaults" className="flex items-center gap-2">
-              <span>Explore All Vaults</span>
+              <span>Explore All Nodo Vaults</span>
               <ChevronRight className="w-4 h-4" />
             </Link>
           </Button>
@@ -57,14 +57,14 @@ const VaultTabs: React.FC<VaultTabsProps> = ({ vaults, selectedAgent, onOpenDepo
                   <LineChart className="w-5 h-5 text-aero" />
                 </div>
                 <div>
-                  <div className="text-xs opacity-70">ātv 111</div>
-                  <h3 className="font-bold">Yield Optimization</h3>
+                  <div className="text-xs opacity-70">nodo 111</div>
+                  <h3 className="font-bold">Nodo Stability Vault</h3>
                 </div>
               </div>
               <span className="text-aero font-mono">5.8% - 8.4% APY</span>
             </div>
             <p className="text-white/70 text-sm mb-6 line-clamp-2">
-              Designed to optimize yield for stable coin holders - focusing on USDC holders.
+              Designed to optimize yield for stable coin holders with Nodo's advanced risk management.
             </p>
             <div className="flex justify-between items-center">
               <div>
@@ -87,14 +87,14 @@ const VaultTabs: React.FC<VaultTabsProps> = ({ vaults, selectedAgent, onOpenDepo
                   <BarChart3 className="w-5 h-5 text-orion" />
                 </div>
                 <div>
-                  <div className="text-xs opacity-70">ātv 502</div>
-                  <h3 className="font-bold">Quant & DeFi</h3>
+                  <div className="text-xs opacity-70">nodo 502</div>
+                  <h3 className="font-bold">Nodo Growth Engine</h3>
                 </div>
               </div>
               <span className="text-orion font-mono">8.6% - 12.4% APY</span>
             </div>
             <p className="text-white/70 text-sm mb-6 line-clamp-2">
-              Data-driven insights and automated trading based on on-chain analytics.
+              Nodo's quantitative strategy leveraging AI analytics for higher returns across DeFi protocols.
             </p>
             <div className="flex justify-between items-center">
               <div>
@@ -112,7 +112,7 @@ const VaultTabs: React.FC<VaultTabsProps> = ({ vaults, selectedAgent, onOpenDepo
           
           <div className="text-center py-4">
             <Button className="bg-gradient-to-r from-nova to-aero" asChild>
-              <Link to="/vaults">Browse All Vaults</Link>
+              <Link to="/vaults">Browse All Nodo Vaults</Link>
             </Button>
           </div>
         </div>
@@ -120,10 +120,10 @@ const VaultTabs: React.FC<VaultTabsProps> = ({ vaults, selectedAgent, onOpenDepo
       
       <TabsContent value="analytics">
         <Card className="glass-card p-6 rounded-xl text-center py-12">
-          <h3 className="text-xl font-semibold mb-2">Portfolio Analytics</h3>
-          <p className="text-white/70 mb-4">Detailed analysis of your investment performance across all vaults</p>
+          <h3 className="text-xl font-semibold mb-2">Nodo Portfolio Analytics</h3>
+          <p className="text-white/70 mb-4">Detailed analysis of your investment performance across all Nodo vaults</p>
           <div className="h-60 bg-white/5 rounded-lg border border-white/10 flex items-center justify-center">
-            <span className="text-white/40">Analytics Dashboard Coming Soon</span>
+            <span className="text-white/40">Nodo Analytics Dashboard Coming Soon</span>
           </div>
         </Card>
       </TabsContent>

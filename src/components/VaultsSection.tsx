@@ -40,7 +40,7 @@ const VaultCard = ({
       <div className="flex justify-between mb-6">
         <div>
           <div className="text-sm text-white/60">Expected APY</div>
-          <div className="text-lg font-bold">{apy}</div>
+          <div className="text-lg font-bold font-mono">{apy}</div>
         </div>
       </div>
       
@@ -70,9 +70,9 @@ const VaultsSection = () => {
       <div className="container mx-auto relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12">
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold mb-2">Popular Vaults</h2>
+            <h2 className="text-2xl md:text-3xl font-bold mb-2">Nodo <span className="text-gradient-nova">Vaults</span></h2>
             <p className="text-white/70 max-w-xl">
-              Discover our top-performing AI-powered investment strategies with built-in risk management
+              Discover our top-performing AI-powered investment vaults with institutional-grade risk management
             </p>
           </div>
           <Link to="/vaults" className="group flex items-center gap-2 py-2 mt-4 md:mt-0 text-white hover:text-nova transition-colors">
@@ -83,28 +83,28 @@ const VaultsSection = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <VaultCard
-            name="Market Making"
+            name="Nodo Growth Engine"
             icon={<LineChart className="w-5 h-5 text-white" />}
-            description="Automated liquidity management with market-making strategies across exchanges."
-            apy="7.2% - 9.8%"
+            description="Nodo's quantitative strategy leveraging AI analytics for higher returns across DeFi protocols."
+            apy="8.6% - 12.4%"
             color="bg-nova/20 text-nova"
             shadow="shadow-neon-nova"
             highlight={true}
           />
           
           <VaultCard
-            name="Yield Optimization"
+            name="Nodo Stability Vault"
             icon={<Sparkles className="w-5 h-5 text-white" />}
-            description="Maximize returns across DeFi protocols and yield pools with AI rebalancing."
+            description="Designed for stable returns with minimal volatility. Focused on secure yield generation."
             apy="5.8% - 8.4%"
             color="bg-aero/20 text-aero"
             shadow="shadow-neon-aero"
           />
           
           <VaultCard
-            name="Risk-Managed Growth"
-            icon={<TrendingUp className="w-5 h-5 text-white" />}
-            description="Low-risk strategies focusing on capital preservation with steady growth."
+            name="Nodo Capital Preservation"
+            icon={<ShieldCheck className="w-5 h-5 text-white" />}
+            description="Low-risk strategies focusing on capital preservation with steady, consistent growth."
             apy="3.8% - 6.2%"
             color="bg-orion/20 text-orion"
             shadow="shadow-neon-orion"

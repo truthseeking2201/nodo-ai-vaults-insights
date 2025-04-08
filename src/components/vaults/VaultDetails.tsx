@@ -31,20 +31,20 @@ const VaultDetails: React.FC<VaultDetailsProps> = ({ vault }) => {
 
   return (
     <div>
-      {/* Overview Section */}
+      {/* Overview Section - Updated for Nodo */}
       <div className="mb-12">
-        <h2 className="text-2xl font-bold text-white mb-4">overview</h2>
+        <h2 className="text-2xl font-bold text-white mb-4">nodo <span className="text-gradient-nova">vault overview</span></h2>
         <p className="text-white/80 max-w-4xl">
           {vault.description}
         </p>
       </div>
       
-      {/* Performance Chart */}
+      {/* Performance Chart - Updated with Nodo styling */}
       <Card className="glass-card p-8 rounded-xl border border-white/10 mb-12">
         <div className="grid grid-cols-1 md:grid-cols-3 mb-6">
           <div>
             <div className="text-sm text-white/60 mb-1">NAV</div>
-            <div className="text-2xl font-bold font-mono text-aero">{vault.nav}</div>
+            <div className="text-2xl font-bold font-mono text-nova">{vault.nav}</div>
           </div>
           <div>
             <div className="text-sm text-white/60 mb-1">TVL</div>
@@ -56,7 +56,7 @@ const VaultDetails: React.FC<VaultDetailsProps> = ({ vault }) => {
           </div>
         </div>
         
-        {/* Chart */}
+        {/* Chart - Nodo styled */}
         <div className="h-60 relative">
           {/* Chart Y-axis labels */}
           <div className="absolute left-0 top-0 bottom-0 w-12 flex flex-col justify-between text-xs text-white/40 font-mono">
@@ -113,8 +113,8 @@ const VaultDetails: React.FC<VaultDetailsProps> = ({ vault }) => {
         </div>
       </Card>
       
-      {/* Technical Details Section */}
-      <h2 className="text-2xl font-bold text-white mb-4">technical details</h2>
+      {/* Technical Details Section - Nodo branded */}
+      <h2 className="text-2xl font-bold text-white mb-4">technical <span className="text-gradient-nova">specifications</span></h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
         {/* Risk Rating */}
         <Card className="glass-card p-6 rounded-xl border border-white/10 h-full">
@@ -122,7 +122,7 @@ const VaultDetails: React.FC<VaultDetailsProps> = ({ vault }) => {
             <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center">
               <GaugeCircle className="w-4 h-4 text-white" />
             </div>
-            <span className="text-sm text-white/80">risk rating</span>
+            <span className="text-sm text-white/80">risk profile</span>
           </div>
           
           <div className="relative h-24 flex items-center justify-center">
@@ -153,12 +153,12 @@ const VaultDetails: React.FC<VaultDetailsProps> = ({ vault }) => {
             <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center">
               {vault.portfolio.icon}
             </div>
-            <span className="text-sm text-white/80">portfolio</span>
+            <span className="text-sm text-white/80">nodo portfolio</span>
           </div>
           
           <div className="flex items-center h-24">
             <span className="text-sm text-white/60">
-              rebalanced on {vault.portfolio.releaseDate}
+              last rebalanced: {vault.portfolio.releaseDate}
             </span>
           </div>
         </Card>
@@ -169,7 +169,7 @@ const VaultDetails: React.FC<VaultDetailsProps> = ({ vault }) => {
             <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center">
               {vault.chain.icon}
             </div>
-            <span className="text-sm text-white/80">chain</span>
+            <span className="text-sm text-white/80">blockchain</span>
           </div>
           
           <div className="flex items-center h-24">
@@ -189,7 +189,7 @@ const VaultDetails: React.FC<VaultDetailsProps> = ({ vault }) => {
                 <path d="M16 3.5C19.33 3.68 21 4.95 21 9.65V15.83C21 19.95 20 22.01 15 22.01H9C4 22.01 3 19.95 3 15.83V9.65C3 4.95 4.67 3.69 8 3.5H16Z" stroke="currentColor" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
-            <span className="text-sm text-white/80">compatibility</span>
+            <span className="text-sm text-white/80">nodo ecosystem</span>
           </div>
           
           <div className="flex items-center gap-3 h-24">
@@ -202,8 +202,8 @@ const VaultDetails: React.FC<VaultDetailsProps> = ({ vault }) => {
         </Card>
       </div>
       
-      {/* Features Section */}
-      <h2 className="text-2xl font-bold text-white mb-4">features</h2>
+      {/* Features Section - Nodo branded */}
+      <h2 className="text-2xl font-bold text-white mb-4">nodo <span className="text-gradient-nova">features</span></h2>
       <Card className="glass-card rounded-xl border border-white/10 overflow-hidden mb-8">
         {vault.features.map((feature, index) => (
           <div 

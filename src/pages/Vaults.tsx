@@ -9,14 +9,15 @@ import { LineChart as LineChartIcon, Sparkles, TrendingUp, BarChart3, PieChart, 
 import { Link } from 'react-router-dom';
 import VaultDetails from '@/components/vaults/VaultDetails';
 
+// Define the vault data structure to reflect Nodo's offerings
 const vaults = [
   {
     id: "vault-111",
-    name: "Yield Optimization Vault",
+    name: "Nodo Stability Vault",
     code: "111",
     type: "Yield Optimization",
     icon: <Sparkles className="w-5 h-5 text-white" />,
-    description: "Designed to optimize yield for stable coin holders - focusing on USDC holders. Through dynamic allocation and incentive-driven staking, this vault is designed for users to achieve maximum passive yields with minimal friction.",
+    description: "Designed for stable returns with minimal volatility. This Nodo vault focuses on secure yield generation through proven DeFi strategies, optimized for USDC holders seeking consistent passive income with institutional-grade risk management.",
     nav: "$100.13",
     tvl: "$28,715.31",
     inception: "26 Mar 23",
@@ -30,49 +31,48 @@ const vaults = [
       releaseDate: "May 27, 2023"
     },
     chain: {
-      name: "Ethereum",
-      icon: <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center text-xs text-white">E</div>
+      name: "Nodo Chain",
+      icon: <div className="w-5 h-5 bg-nova/80 rounded-full flex items-center justify-center text-xs text-white">N</div>
     },
     compatibility: [
-      <div key="1" className="w-5 h-5 bg-pink-500 rounded-full flex items-center justify-center text-xs text-white">M</div>,
-      <div key="2" className="w-5 h-5 bg-blue-400 rounded-full flex items-center justify-center text-xs text-white">S</div>,
-      <div key="3" className="w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center text-xs text-white">B</div>
+      <div key="1" className="w-5 h-5 bg-nova/60 rounded-full flex items-center justify-center text-xs text-white">N</div>,
+      <div key="2" className="w-5 h-5 bg-aero/60 rounded-full flex items-center justify-center text-xs text-white">A</div>
     ],
     features: [
       {
-        title: "Dual-layer yield",
+        title: "Nodo Smart Yield",
         icon: <Coins className="w-5 h-5 text-aero" />,
-        description: "Earn native stable yield as well as aarná staking yields"
+        description: "Earn native yields plus additional Nodo token rewards through our innovative dual-layer system"
       },
       {
-        title: "Portfolio rebalancing",
+        title: "Dynamic Rebalancing",
         icon: <Layers className="w-5 h-5 text-aero" />,
-        description: "The underlying assets are dynamically adjusted to the best-performing protocols"
+        description: "Nodo's AI algorithms continuously adjust portfolio allocations to maximize returns across market conditions"
       },
       {
-        title: "Redemption mode",
+        title: "Flexible Withdrawals",
         icon: <Clock className="w-5 h-5 text-aero" />,
-        description: "Users can choose to queue their withdrawals for lower gas costs or directly withdraw"
+        description: "Choose between instant access or scheduled withdrawals with optimized gas efficiency"
       },
       {
-        title: "Fee structure",
+        title: "Nodo Fee Structure",
         icon: <CircleDollarSign className="w-5 h-5 text-aero" />,
-        description: "• No annual fee\n• 1% transaction and 10% performance fee"
+        description: "• No annual management fee\n• 1% transaction and 10% performance fee"
       }
     ]
   },
   {
     id: "vault-502",
-    name: "DeFi Analytics Vault",
+    name: "Nodo Growth Engine",
     code: "502",
     type: "Quant & DeFi",
     icon: <LineChartIcon className="w-5 h-5 text-white" />,
-    description: "Data-driven insights and automated trading based on on-chain analytics with quantitative strategies and advanced DeFi integrations.",
+    description: "Nodo's quantitative strategy vault designed for higher returns. Leverages advanced AI algorithms and on-chain analytics to identify optimal trading opportunities across DeFi protocols. Suitable for investors seeking enhanced yield with managed risk exposure.",
     nav: "$105.27",
     tvl: "$6,432.80",
     inception: "15 Apr 23",
     apy: "8.6% - 12.4%",
-    risk: "Medium-High",
+    risk: "Medium",
     color: "bg-orion/20 text-orion",
     shadow: "shadow-neon-orion",
     chartColor: "#9B87F5",
@@ -81,33 +81,33 @@ const vaults = [
       releaseDate: "April 15, 2023"
     },
     chain: {
-      name: "Sui",
-      icon: <div className="w-5 h-5 bg-cyan-500 rounded-full flex items-center justify-center text-xs text-white">S</div>
+      name: "Ethereum",
+      icon: <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center text-xs text-white">E</div>
     },
     compatibility: [
-      <div key="1" className="w-5 h-5 bg-pink-500 rounded-full flex items-center justify-center text-xs text-white">M</div>,
-      <div key="2" className="w-5 h-5 bg-green-400 rounded-full flex items-center justify-center text-xs text-white">A</div>
+      <div key="1" className="w-5 h-5 bg-nova/60 rounded-full flex items-center justify-center text-xs text-white">N</div>,
+      <div key="2" className="w-5 h-5 bg-orion/60 rounded-full flex items-center justify-center text-xs text-white">O</div>
     ],
     features: [
       {
-        title: "AI-driven strategies",
+        title: "Nodo AI Trading",
         icon: <Sparkles className="w-5 h-5 text-orion" />,
-        description: "Machine learning models optimize trading strategies based on market conditions"
+        description: "Proprietary machine learning models optimize strategies based on market conditions and on-chain data"
       },
       {
-        title: "Multi-chain exposure",
+        title: "Cross-Chain Exposure",
         icon: <Layers className="w-5 h-5 text-orion" />,
-        description: "Access opportunities across multiple blockchains through optimized bridge protocols"
+        description: "Access opportunities across multiple blockchains through Nodo's secure bridge technology"
       },
       {
-        title: "Real-time monitoring",
+        title: "24/7 Monitoring",
         icon: <BarChart3 className="w-5 h-5 text-orion" />,
-        description: "24/7 automated position management with advanced risk parameters"
+        description: "Continuous position management with automated risk controls and alert systems"
       },
       {
-        title: "Fee structure",
+        title: "Premium Fee Structure",
         icon: <CircleDollarSign className="w-5 h-5 text-orion" />,
-        description: "• 0.5% annual management fee\n• 15% performance fee"
+        description: "• 0.5% annual management fee\n• 15% performance fee on profits"
       }
     ]
   }
@@ -127,7 +127,7 @@ const Vaults = () => {
       <Navbar />
       <main className="relative z-10 container mx-auto">
         <div className="pt-32 pb-16 px-6 md:px-12">
-          {/* Vault Selector */}
+          {/* Vault Selector - Made more concise and Nodo-themed */}
           <div className="flex justify-center mb-12">
             <div className="glass-panel px-2 py-2 rounded-full flex items-center space-x-3">
               {vaults.map((vault) => (
@@ -148,7 +148,7 @@ const Vaults = () => {
                     {vault.icon}
                   </div>
                   <div className="text-left">
-                    <div className="text-xs opacity-70">ātv {vault.code}</div>
+                    <div className="text-xs opacity-70">nodo {vault.code}</div>
                     <div className="font-medium text-sm">{vault.type}</div>
                   </div>
                 </button>
@@ -156,20 +156,20 @@ const Vaults = () => {
             </div>
           </div>
 
-          {/* Vault Details */}
+          {/* Vault Details - Content updated for Nodo */}
           <VaultDetails vault={selectedVault} />
           
-          {/* Staking & Time Lock Rewards Section */}
+          {/* Nodo Staking & Rewards Section */}
           <div className="mt-16">
             <div className="glass-card p-8 rounded-xl border border-white/10 relative overflow-hidden">
               <div className="absolute -left-16 -bottom-16">
                 <div className="relative w-48 h-48">
-                  <div className="w-full h-full rounded-full border-4 border-aero/30 flex items-center justify-center">
-                    <div className="w-36 h-36 rounded-full border-4 border-aero/50 flex flex-col items-center justify-center text-center bg-nodo-darker">
-                      <div className="text-aero font-medium">booster</div>
-                      <div className="text-aero font-medium">time lock</div>
+                  <div className="w-full h-full rounded-full border-4 border-nova/30 flex items-center justify-center">
+                    <div className="w-36 h-36 rounded-full border-4 border-nova/50 flex flex-col items-center justify-center text-center bg-nodo-darker">
+                      <div className="text-nova font-medium">nodo</div>
+                      <div className="text-nova font-medium">rewards</div>
                       <div className="text-white font-bold font-mono mt-1">USDC 2X</div>
-                      <div className="text-aero text-sm">APY</div>
+                      <div className="text-nova text-sm">APY</div>
                     </div>
                   </div>
                 </div>
@@ -177,13 +177,13 @@ const Vaults = () => {
               
               <div className="ml-32">
                 <h2 className="text-2xl font-bold mb-2">
-                  <span className="text-aero">ātv</span> staking & time lock 
-                  <span className="text-aero ml-2">rewards</span>
+                  <span className="text-nova">nodo</span> staking & yield 
+                  <span className="text-nova ml-2">boosters</span>
                 </h2>
                 <p className="text-white/70 mb-4">
-                  Stake ātv and boost returns with pre-sale access to AARNA
+                  Stake NODO tokens to amplify your returns and unlock premium features
                 </p>
-                <Button variant="outline" className="bg-transparent border-aero/30 text-aero hover:bg-aero/10">
+                <Button variant="outline" className="bg-transparent border-nova/30 text-nova hover:bg-nova/10">
                   learn more <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>
               </div>

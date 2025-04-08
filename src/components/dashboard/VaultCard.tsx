@@ -30,24 +30,24 @@ const VaultCard: React.FC<VaultCardProps> = ({ vault, onOpenDepositDialog, prima
             </div>
             <div>
               <div className="font-bold">{vault.title}</div>
-              <div className="text-xs text-white/60">Active since {vault.activeDate}</div>
+              <div className="text-xs text-white/60">Nodo vault - Active since {vault.activeDate}</div>
             </div>
           </div>
         </div>
         
         <div>
           <div className="text-xs text-white/60">Allocation</div>
-          <div className="font-semibold">{vault.allocation}</div>
+          <div className="font-semibold font-mono">{vault.allocation}</div>
         </div>
         
         <div>
           <div className="text-xs text-white/60">Current APY</div>
-          <div className="font-semibold text-green-400">{vault.apy}</div>
+          <div className="font-semibold text-green-400 font-mono">{vault.apy}</div>
         </div>
         
         <div>
           <div className="text-xs text-white/60">30d Profit</div>
-          <div className="font-semibold">{vault.profit}</div>
+          <div className="font-semibold font-mono">{vault.profit}</div>
         </div>
         
         <div className="flex gap-2">
