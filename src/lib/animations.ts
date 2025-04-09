@@ -173,3 +173,106 @@ export const textScramble = (target: AnimationTarget, finalText: string, duratio
     }
   };
 };
+
+// Added: Digital number counter with flipping effect
+export const digitalCounter = (target: AnimationTarget, endValue: number, duration: number = 2000) => {
+  return anime({
+    targets: target,
+    innerHTML: [0, endValue],
+    round: 1,
+    easing: 'easeInOutExpo',
+    duration,
+    update: function(anim) {
+      const targets = anim.animatables;
+      targets.forEach(animatable => {
+        const target = animatable.target;
+        const value = Math.floor(target.innerHTML);
+        const formattedValue = value.toString().padStart(2, '0');
+        target.innerHTML = formattedValue;
+      });
+    }
+  });
+};
+
+// Added: Particle system animation
+export const createParticleSystem = (container: HTMLElement, count: number = 30, color: string = '#F97316') => {
+  // Clear any existing particles
+  while (container.firstChild) {
+    container.removeChild(container.firstChild);
+  }
+  
+  // Create particles
+  for (let i = 0; i < count; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'absolute rounded-full';
+    particle.style.backgroundColor = color;
+    particle.style.width = '6px';
+    particle.style.height = '6px';
+    particle.style.opacity = '0';
+    container.appendChild(particle);
+  }
+
+  // Animate particles
+  return anime({
+    targets: container.children,
+    translateX: () => anime.random(-100, 100) + '%',
+    translateY: () => anime.random(-100, 100) + '%',
+    scale: () => anime.random(0.2, 1),
+    opacity: [0, () => anime.random(0.3, 0.7)],
+    duration: () => anime.random(1000, 3000),
+    delay: anime.stagger(100, {from: 'center'}),
+    loop: true,
+    direction: 'alternate',
+    easing: 'easeInOutQuad',
+  });
+};
+
+// Added: Advanced glow effect for elements
+export const advancedGlow = (target: AnimationTarget, primaryColor: string, secondaryColor: string) => {
+  return anime({
+    targets: target,
+    boxShadow: [
+      '0 0 5px ' + primaryColor + '33',
+      '0 0 20px ' + primaryColor + '66',
+      '0 0 35px ' + secondaryColor + '33',
+      '0 0 20px ' + primaryColor + '66',
+      '0 0 5px ' + primaryColor + '33'
+    ],
+    easing: 'easeInOutSine',
+    duration: 3000,
+    loop: true
+  });
+};
+
+// Added: Typing animation for text
+export const typeText = (target: AnimationTarget, text: string, speed: number = 50) => {
+  // Get the element
+  let element: Element | null = null;
+  
+  if (typeof target === 'string') {
+    element = document.querySelector(target);
+  } else if (target instanceof Element) {
+    element = target;
+  } else if (target instanceof NodeList && target.length > 0) {
+    element = target[0] as Element;
+  }
+  
+  if (!element) {
+    console.error('Type text could not find target element');
+    return;
+  }
+  
+  // Create the animation
+  let i = 0;
+  element.textContent = '';
+  
+  const typing = () => {
+    if (i < text.length) {
+      element!.textContent += text.charAt(i);
+      i++;
+      setTimeout(typing, speed);
+    }
+  };
+  
+  typing();
+};
