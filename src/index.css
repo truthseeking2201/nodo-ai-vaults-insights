@@ -282,7 +282,7 @@
 }
 
 .subtle-hover:hover {
-  @apply bg-white/8;
+  @apply bg-white/10;
   box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.1), 
               0 0 1px 0 rgba(155, 135, 245, 0.25);
   transform: translateY(-2px);
