@@ -7,11 +7,13 @@ import { LineChart, ArrowRight, InfoIcon, Clock, ChevronDown, Sparkles, Trending
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DepositDialog from '@/components/dashboard/DepositDialog';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import WithdrawalDialog from '@/components/dashboard/WithdrawalDialog';
+import { ChartContainer } from '@/components/ui/chart';
+import { AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts';
 import { VaultOption } from '@/components/vaults/VaultSelector';
 import { useToast } from '@/hooks/use-toast';
 import TransactionHistory from '@/components/TransactionHistory';
+import BalanceCard from '@/components/dashboard/BalanceCard';
 
 // Strategy data
 const strategies = [
@@ -119,7 +121,8 @@ const Dashboard = () => {
   const [showDepositPanel, setShowDepositPanel] = useState(true);
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [showDepositDialog, setShowDepositDialog] = useState(false);
-  const [showTransactionHistory, setShowTransactionHistory] = useState(false);
+  const [showWithdrawalDialog, setShowWithdrawalDialog] = useState(false);
+  const [showTransactionHistory, setShowTransactionHistory] = useState(true);
   
   // User portfolio data - in a real app this would come from an API
   const userPortfolio = {
@@ -147,6 +150,14 @@ const Dashboard = () => {
   const handleDepositClick = () => {
     if (isWalletConnected) {
       setShowDepositDialog(true);
+    } else {
+      handleConnectWallet();
+    }
+  };
+
+  const handleWithdrawClick = () => {
+    if (isWalletConnected) {
+      setShowWithdrawalDialog(true);
     } else {
       handleConnectWallet();
     }
@@ -252,16 +263,21 @@ const Dashboard = () => {
                   <ChevronRight className="w-4 h-4" />
                 </Button>
                 
-                <Button 
-                  className="bg-nova hover:bg-nova/90 text-white flex items-center gap-2" 
-                  onClick={handleDepositClick}
-                >
-                  {isWalletConnected ? (
-                    <>Deposit <Wallet className="w-4 h-4" /></>
-                  ) : (
-                    <>Connect Wallet <Wallet className="w-4 h-4" /></>
-                  )}
-                </Button>
+                {!isWalletConnected ? (
+                  <Button 
+                    className="bg-nova hover:bg-nova/90 text-white flex items-center gap-2" 
+                    onClick={handleConnectWallet}
+                  >
+                    Connect Wallet <Wallet className="w-4 h-4" />
+                  </Button>
+                ) : (
+                  <Button 
+                    className="bg-nova hover:bg-nova/90 text-white flex items-center gap-2" 
+                    onClick={handleDepositClick}
+                  >
+                    Deposit <Wallet className="w-4 h-4" />
+                  </Button>
+                )}
               </div>
             </div>
           </div>
@@ -470,6 +486,45 @@ const Dashboard = () => {
                       </div>
                     </TabsContent>
                   </Tabs>
+                </div>
+              </Card>
+              
+              {/* Transaction history - Now more prominent */}
+              <Card className="glass-card mb-6 border border-white/10">
+                <div className="p-6">
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-bold">Transaction History</h3>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="bg-transparent border-white/20 text-white"
+                      onClick={() => setShowTransactionHistory(!showTransactionHistory)}
+                    >
+                      {showTransactionHistory ? "Hide Details" : "Show Details"}
+                    </Button>
+                  </div>
+                  
+                  <div className="mb-4">
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="bg-white/5 p-4 rounded-lg">
+                        <div className="text-sm text-white/60 mb-1">Total Deposits</div>
+                        <div className="text-xl font-bold">${userPortfolio.initialInvestment.toLocaleString()}</div>
+                        <div className="text-xs text-white/50">{userPortfolio.deposits.length} transactions</div>
+                      </div>
+                      <div className="bg-white/5 p-4 rounded-lg">
+                        <div className="text-sm text-white/60 mb-1">Total Withdrawals</div>
+                        <div className="text-xl font-bold">$0.00</div>
+                        <div className="text-xs text-white/50">0 transactions</div>
+                      </div>
+                      <div className="bg-white/5 p-4 rounded-lg">
+                        <div className="text-sm text-white/60 mb-1">Net Position</div>
+                        <div className="text-xl font-bold">${userPortfolio.currentValue.toLocaleString()}</div>
+                        <div className="text-xs text-green-400">+${userPortfolio.profitLoss.toLocaleString()} profit</div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {showTransactionHistory && <TransactionHistory />}
                 </div>
               </Card>
               
@@ -714,13 +769,24 @@ const Dashboard = () => {
               </Card>
             </div>
             
-            {/* Deposit panel */}
-            {showDepositPanel && (
-              <div className="lg:col-span-1">
-                <Card className="glass-card border border-white/10 sticky top-6">
+            {/* Right sidebar */}
+            <div className="lg:col-span-1">
+              {/* Balance Card */}
+              <BalanceCard 
+                initialInvestment={userPortfolio.initialInvestment}
+                currentValue={userPortfolio.currentValue}
+                profitLoss={userPortfolio.profitLoss}
+                profitLossPercentage={userPortfolio.profitLossPercentage}
+                onDeposit={handleDepositClick}
+                onWithdraw={handleWithdrawClick}
+              />
+              
+              {/* Deposit panel */}
+              {showDepositPanel && (
+                <Card className="glass-card border border-white/10 sticky top-6 mt-6">
                   <div className="p-6">
                     <div className="flex justify-between items-center mb-4">
-                      <h3 className="text-lg font-bold">Deposit</h3>
+                      <h3 className="text-lg font-bold">Quick Deposit</h3>
                       <button 
                         className="text-white/50 hover:text-white"
                         onClick={() => setShowDepositPanel(!showDepositPanel)}
@@ -787,8 +853,8 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </Card>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </main>
@@ -802,6 +868,18 @@ const Dashboard = () => {
         vaults={strategies}
         onVaultChange={handleStrategyChange}
         onSubmit={handleVaultSubmit}
+      />
+      
+      {/* Withdrawal Dialog */}
+      <WithdrawalDialog 
+        open={showWithdrawalDialog} 
+        onOpenChange={setShowWithdrawalDialog}
+        vault={{
+          name: selectedStrategy.name,
+          icon: selectedStrategy.icon,
+          iconBg: selectedStrategy.color
+        }}
+        userBalance={userPortfolio.currentValue}
       />
       
       <Footer />
