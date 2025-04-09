@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -253,7 +254,8 @@ const Dashboard = () => {
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Strategy overview */}
+            <div className="lg:col-span-2">
+              {/* Strategy overview */}
               <Card className="glass-card mb-6 border border-white/10 overflow-hidden">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
                   <div>
@@ -737,3 +739,17 @@ const Dashboard = () => {
         onOpenChange={setShowDepositDialog}
         selectedVault={selectedStrategy}
         primaryColor={selectedStrategy.colorAccent}
+        vaults={strategies}
+        onVaultChange={handleStrategyChange}
+        onSubmit={(values) => {
+          console.log("Deposit submitted:", values);
+          setShowDepositDialog(false);
+        }}
+      />
+      
+      <Footer />
+    </div>
+  );
+};
+
+export default Dashboard;
