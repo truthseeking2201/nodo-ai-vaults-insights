@@ -1,8 +1,11 @@
 
 import anime from 'animejs';
 
+// Updated type definition to include NodeListOf<Element>
+type AnimationTarget = string | Element | NodeListOf<Element>;
+
 // Basic animations
-export const fadeIn = (target: string | Element, duration: number = 800, delay: number = 0) => {
+export const fadeIn = (target: AnimationTarget, duration: number = 800, delay: number = 0) => {
   return anime({
     targets: target,
     opacity: [0, 1],
@@ -13,7 +16,7 @@ export const fadeIn = (target: string | Element, duration: number = 800, delay: 
   });
 };
 
-export const fadeOut = (target: string | Element, duration: number = 800, delay: number = 0) => {
+export const fadeOut = (target: AnimationTarget, duration: number = 800, delay: number = 0) => {
   return anime({
     targets: target,
     opacity: [1, 0],
@@ -25,7 +28,7 @@ export const fadeOut = (target: string | Element, duration: number = 800, delay:
 };
 
 // Staggered animations for lists or grid items
-export const staggerFadeIn = (target: string | Element, staggerDelay: number = 50, duration: number = 800) => {
+export const staggerFadeIn = (target: AnimationTarget, staggerDelay: number = 50, duration: number = 800) => {
   return anime({
     targets: target,
     opacity: [0, 1],
@@ -37,7 +40,7 @@ export const staggerFadeIn = (target: string | Element, staggerDelay: number = 5
 };
 
 // Value counter animation
-export const countUp = (target: string | Element, endValue: number, duration: number = 2000) => {
+export const countUp = (target: AnimationTarget, endValue: number, duration: number = 2000) => {
   return anime({
     targets: target,
     textContent: [0, endValue],
@@ -58,7 +61,7 @@ export const countUp = (target: string | Element, endValue: number, duration: nu
 };
 
 // Visual effects
-export const pulseGlow = (target: string | Element, color: string = 'rgba(249, 115, 22, 0.6)', duration: number = 1500) => {
+export const pulseGlow = (target: AnimationTarget, color: string = 'rgba(249, 115, 22, 0.6)', duration: number = 1500) => {
   return anime({
     targets: target,
     boxShadow: [
@@ -73,7 +76,7 @@ export const pulseGlow = (target: string | Element, color: string = 'rgba(249, 1
 };
 
 // Interactive hovering elements
-export const floatingElement = (target: string | Element, distance: number = 15) => {
+export const floatingElement = (target: AnimationTarget, distance: number = 15) => {
   return anime({
     targets: target,
     translateY: [0, -distance, 0],
@@ -84,7 +87,7 @@ export const floatingElement = (target: string | Element, distance: number = 15)
 };
 
 // Path drawing animation for SVGs
-export const drawSVGPath = (target: string | Element, duration: number = 1500, delay: number = 0) => {
+export const drawSVGPath = (target: AnimationTarget, duration: number = 1500, delay: number = 0) => {
   return anime({
     targets: target,
     strokeDashoffset: [anime.setDashoffset, 0],
@@ -96,7 +99,7 @@ export const drawSVGPath = (target: string | Element, duration: number = 1500, d
 };
 
 // Background gradient animation
-export const animateGradient = (target: string | Element, colors: string[], duration: number = 3000) => {
+export const animateGradient = (target: AnimationTarget, colors: string[], duration: number = 3000) => {
   // Create a gradient animation sequence
   const keyframes = [];
   for (let i = 0; i < colors.length; i++) {
@@ -115,7 +118,7 @@ export const animateGradient = (target: string | Element, colors: string[], dura
 };
 
 // Text scramble effect
-export const textScramble = (target: string | Element, finalText: string, duration: number = 2000) => {
+export const textScramble = (target: AnimationTarget, finalText: string, duration: number = 2000) => {
   const characters = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
   const originalText = document.querySelector(target as string)?.textContent || '';
   let output = '';
