@@ -2,9 +2,7 @@
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LineChart as LineChartIcon, Sparkles, TrendingUp, BarChart3, PieChart, ShieldCheck, Hexagon, CircleDollarSign, ArrowRight, GaugeCircle, Clock, Layers, Coins } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import VaultDetails from '@/components/vaults/VaultDetails';
@@ -13,7 +11,7 @@ import VaultDetails from '@/components/vaults/VaultDetails';
 const vaults = [
   {
     id: "vault-111",
-    name: "Steady Cosmos Vault",
+    name: "CosmosYield",
     type: "Yield Optimization",
     icon: <Sparkles className="w-5 h-5 text-white" />,
     description: "Designed for stable returns with minimal volatility. This Nodo vault focuses on secure yield generation through proven DeFi strategies, optimized for USDC holders seeking consistent passive income with institutional-grade risk management.",
@@ -30,8 +28,8 @@ const vaults = [
       releaseDate: "May 27, 2023"
     },
     chain: {
-      name: "Nodo Chain",
-      icon: <div className="w-5 h-5 bg-nova/80 rounded-full flex items-center justify-center text-xs text-white">N</div>
+      name: "Sui",
+      icon: <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center text-xs text-white">S</div>
     },
     compatibility: [
       <div key="1" className="w-5 h-5 bg-nova/60 rounded-full flex items-center justify-center text-xs text-white">N</div>,
@@ -62,7 +60,7 @@ const vaults = [
   },
   {
     id: "vault-502",
-    name: "Quantum Yield Nexus",
+    name: "NexusAI",
     type: "DeFi Analyst",
     icon: <LineChartIcon className="w-5 h-5 text-white" />,
     description: "Nodo's quantitative strategy vault designed for higher returns. Leverages advanced AI algorithms and on-chain analytics to identify optimal trading opportunities across DeFi protocols. Suitable for investors seeking enhanced yield with managed risk exposure.",
@@ -79,8 +77,8 @@ const vaults = [
       releaseDate: "April 15, 2023"
     },
     chain: {
-      name: "Ethereum",
-      icon: <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center text-xs text-white">E</div>
+      name: "Sui",
+      icon: <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center text-xs text-white">S</div>
     },
     compatibility: [
       <div key="1" className="w-5 h-5 bg-nova/60 rounded-full flex items-center justify-center text-xs text-white">N</div>,
@@ -111,7 +109,7 @@ const vaults = [
   },
   {
     id: "vault-703",
-    name: "Phoenix Alpha Engine",
+    name: "AlphaSync",
     type: "Market Maker",
     icon: <TrendingUp className="w-5 h-5 text-white" />,
     description: "Advanced trading strategy targeting alpha generation through sophisticated market-making algorithms. This Nodo vault utilizes high-frequency execution with optimized gas and MEV protection to capture spreads across decentralized exchanges.",
@@ -128,8 +126,8 @@ const vaults = [
       releaseDate: "June 10, 2023"
     },
     chain: {
-      name: "Multi-Chain",
-      icon: <div className="w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center text-xs text-white">M</div>
+      name: "Sui",
+      icon: <div className="w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center text-xs text-white">S</div>
     },
     compatibility: [
       <div key="1" className="w-5 h-5 bg-nova/60 rounded-full flex items-center justify-center text-xs text-white">N</div>,
@@ -209,23 +207,10 @@ const Vaults = () => {
           {/* Vault Details - Content updated for Nodo */}
           <VaultDetails vault={selectedVault} />
           
-          {/* Nodo Staking & Rewards Section */}
+          {/* Nodo Staking & Rewards Section - Removed USDC 2X circle */}
           <div className="mt-16">
             <div className="glass-card p-8 rounded-xl border border-white/10 relative overflow-hidden">
-              <div className="absolute -left-16 -bottom-16">
-                <div className="relative w-48 h-48">
-                  <div className="w-full h-full rounded-full border-4 border-nova/30 flex items-center justify-center">
-                    <div className="w-36 h-36 rounded-full border-4 border-nova/50 flex flex-col items-center justify-center text-center bg-nodo-darker">
-                      <div className="text-nova font-medium">nodo</div>
-                      <div className="text-nova font-medium">rewards</div>
-                      <div className="text-white font-bold font-mono mt-1">USDC 2X</div>
-                      <div className="text-nova text-sm">APY</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="ml-32">
+              <div className="ml-6">
                 <h2 className="text-2xl font-bold mb-2">
                   <span className="text-nova">nodo</span> staking & yield 
                   <span className="text-nova ml-2">boosters</span>
