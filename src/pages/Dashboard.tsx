@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -228,45 +227,25 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Vault Selection Cards */}
+          {/* Vault Selection Cards - Simplified */}
           <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
             {strategies.map((strategy, index) => (
               <Card 
                 key={strategy.id}
-                className={`transition-all cursor-pointer border ${
+                className={`transition-all cursor-pointer border h-24 ${
                   selectedStrategyIndex === index 
                     ? `border-${strategy.colorAccent} bg-${strategy.colorAccent}/10` 
                     : 'border-white/10 bg-nodo-dark hover:bg-white/5'
                 }`}
                 onClick={() => setSelectedStrategyIndex(index)}
               >
-                <div className="p-4">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${strategy.color}`}>
-                      {strategy.icon}
-                    </div>
-                    <div>
-                      <h3 className="font-bold">{strategy.name}</h3>
-                      <span className="text-xs text-white/60">{strategy.type}</span>
-                    </div>
+                <div className="p-4 h-full flex items-center">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${strategy.color} mr-3`}>
+                    {strategy.icon}
                   </div>
-                  <p className="text-sm text-white/70 mb-3 line-clamp-2">{strategy.description}</p>
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <div className="text-xs text-white/60">Current APY</div>
-                      <div className="font-semibold text-green-400">{strategy.apy}</div>
-                    </div>
-                    <Button 
-                      size="sm" 
-                      className={`bg-${strategy.colorAccent} hover:bg-${strategy.colorAccent}/90`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedStrategyIndex(index);
-                        handleDepositClick();
-                      }}
-                    >
-                      {isWalletConnected ? 'Deposit' : 'Select'}
-                    </Button>
+                  <div>
+                    <h3 className="font-bold">{strategy.name}</h3>
+                    <span className="text-xs text-white/60">{strategy.type}</span>
                   </div>
                 </div>
               </Card>
@@ -274,8 +253,7 @@ const Dashboard = () => {
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2">
-              {/* Strategy overview */}
+            {/* Strategy overview */}
               <Card className="glass-card mb-6 border border-white/10 overflow-hidden">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
                   <div>
@@ -759,17 +737,3 @@ const Dashboard = () => {
         onOpenChange={setShowDepositDialog}
         selectedVault={selectedStrategy}
         primaryColor={selectedStrategy.colorAccent}
-        vaults={strategies}
-        onVaultChange={handleStrategyChange}
-        onSubmit={(values) => {
-          console.log("Deposit submitted:", values);
-          setShowDepositDialog(false);
-        }}
-      />
-      
-      <Footer />
-    </div>
-  );
-};
-
-export default Dashboard;
