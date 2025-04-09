@@ -10,8 +10,38 @@ import { fadeIn } from '@/lib/animations';
 
 const Index = () => {
   useEffect(() => {
-    // Apply initial fade-in animation to the main sections
+    // Apply sequential fade-in animations to the main sections
+    // Delay each section to create a nice scrolling effect
     fadeIn('#vaults-section', 800, 300);
+    
+    // Create scroll animation revealing effect
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const viewportHeight = window.innerHeight;
+      
+      // Get all sections we want to animate on scroll
+      const sections = document.querySelectorAll('.scroll-animate-section');
+      
+      sections.forEach((section) => {
+        const sectionTop = (section as HTMLElement).offsetTop;
+        // Check if section is coming into view
+        if (scrollY > sectionTop - viewportHeight + 100) {
+          section.classList.add('animate-fade-in');
+          section.classList.remove('opacity-0');
+        }
+      });
+    };
+    
+    // Add scroll event listener
+    window.addEventListener('scroll', handleScroll);
+    
+    // Initial check on load
+    handleScroll();
+    
+    // Clean up
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   return (
@@ -19,11 +49,15 @@ const Index = () => {
       <Navbar />
       <main className="relative z-10">
         <HeroSection />
-        <FeaturesSection />
-        <div id="vaults-section">
+        <div className="scroll-animate-section opacity-0">
+          <FeaturesSection />
+        </div>
+        <div id="vaults-section" className="scroll-animate-section opacity-0">
           <VaultsSection />
         </div>
-        <CtaSection />
+        <div className="scroll-animate-section opacity-0">
+          <CtaSection />
+        </div>
       </main>
       <Footer />
     </div>

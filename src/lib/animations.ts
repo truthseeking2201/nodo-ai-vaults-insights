@@ -1,4 +1,3 @@
-
 import anime from 'animejs';
 
 // Updated type definition to include NodeListOf<Element>
@@ -48,7 +47,6 @@ export const countUp = (target: AnimationTarget, endValue: number, duration: num
     easing: 'easeInOutExpo',
     duration,
     update: function(anim) {
-      // For targets that need special formatting like currency
       const element = document.querySelector(target as string);
       if (element && element.hasAttribute('data-format')) {
         const format = element.getAttribute('data-format');
@@ -100,7 +98,6 @@ export const drawSVGPath = (target: AnimationTarget, duration: number = 1500, de
 
 // Background gradient animation
 export const animateGradient = (target: AnimationTarget, colors: string[], duration: number = 3000) => {
-  // Create a gradient animation sequence
   const keyframes = [];
   for (let i = 0; i < colors.length; i++) {
     keyframes.push({ backgroundPosition: `${i * 100}% 0%` });
@@ -121,7 +118,6 @@ export const animateGradient = (target: AnimationTarget, colors: string[], durat
 export const textScramble = (target: AnimationTarget, finalText: string, duration: number = 2000) => {
   const characters = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
   
-  // Get the element regardless of whether target is a string selector or an Element
   let element: Element | null = null;
   
   if (typeof target === 'string') {
@@ -196,12 +192,10 @@ export const digitalCounter = (target: AnimationTarget, endValue: number, durati
 
 // Added: Particle system animation
 export const createParticleSystem = (container: HTMLElement, count: number = 30, color: string = '#F97316') => {
-  // Clear any existing particles
   while (container.firstChild) {
     container.removeChild(container.firstChild);
   }
   
-  // Create particles
   for (let i = 0; i < count; i++) {
     const particle = document.createElement('div');
     particle.className = 'absolute rounded-full';
@@ -212,7 +206,6 @@ export const createParticleSystem = (container: HTMLElement, count: number = 30,
     container.appendChild(particle);
   }
 
-  // Animate particles
   return anime({
     targets: container.children,
     translateX: () => anime.random(-100, 100) + '%',
@@ -246,7 +239,6 @@ export const advancedGlow = (target: AnimationTarget, primaryColor: string, seco
 
 // Added: Typing animation for text
 export const typeText = (target: AnimationTarget, text: string, speed: number = 50) => {
-  // Get the element
   let element: Element | null = null;
   
   if (typeof target === 'string') {
@@ -262,7 +254,6 @@ export const typeText = (target: AnimationTarget, text: string, speed: number = 
     return;
   }
   
-  // Create the animation
   let i = 0;
   element.textContent = '';
   
@@ -275,4 +266,228 @@ export const typeText = (target: AnimationTarget, text: string, speed: number = 
   };
   
   typing();
+};
+
+// Added: Advanced particle system with custom shapes and behaviors
+export const createAdvancedParticleSystem = (
+  container: HTMLElement, 
+  config: {
+    count?: number;
+    colors?: string[];
+    shapes?: ('circle' | 'square' | 'triangle' | 'star' | 'hexagon')[];
+    minSize?: number;
+    maxSize?: number;
+    minSpeed?: number;
+    maxSpeed?: number;
+    glowEffect?: boolean;
+    interactOnHover?: boolean;
+  } = {}
+) => {
+  const {
+    count = 30,
+    colors = ['#F97316', '#FB923C', '#FDBA74', '#FED7AA'],
+    shapes = ['circle', 'circle', 'circle', 'star', 'hexagon'],
+    minSize = 3,
+    maxSize = 8,
+    minSpeed = 1000,
+    maxSpeed = 3000,
+    glowEffect = true,
+    interactOnHover = false
+  } = config;
+  
+  while (container.firstChild) {
+    container.removeChild(container.firstChild);
+  }
+  
+  for (let i = 0; i < count; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'absolute';
+    
+    const shape = shapes[Math.floor(Math.random() * shapes.length)];
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const size = Math.random() * (maxSize - minSize) + minSize;
+    
+    particle.style.width = `${size}px`;
+    particle.style.height = `${size}px`;
+    particle.style.opacity = '0';
+    
+    switch (shape) {
+      case 'circle':
+        particle.style.borderRadius = '50%';
+        particle.style.backgroundColor = color;
+        break;
+      case 'square':
+        particle.style.backgroundColor = color;
+        break;
+      case 'triangle':
+        particle.style.width = '0';
+        particle.style.height = '0';
+        particle.style.borderLeft = `${size/2}px solid transparent`;
+        particle.style.borderRight = `${size/2}px solid transparent`;
+        particle.style.borderBottom = `${size}px solid ${color}`;
+        break;
+      case 'star':
+        const svgStar = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svgStar.setAttribute('viewBox', '0 0 24 24');
+        svgStar.setAttribute('width', `${size * 3}px`);
+        svgStar.setAttribute('height', `${size * 3}px`);
+        
+        const starPath = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+        starPath.setAttribute('points', '12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26');
+        starPath.setAttribute('fill', color);
+        starPath.setAttribute('stroke', 'none');
+        
+        svgStar.appendChild(starPath);
+        particle.appendChild(svgStar);
+        break;
+      case 'hexagon':
+        const svgHex = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svgHex.setAttribute('viewBox', '0 0 24 24');
+        svgHex.setAttribute('width', `${size * 3}px`);
+        svgHex.setAttribute('height', `${size * 3}px`);
+        
+        const hexPath = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+        hexPath.setAttribute('points', '12,2 22,7 22,17 12,22 2,17 2,7');
+        hexPath.setAttribute('fill', color);
+        
+        svgHex.appendChild(hexPath);
+        particle.appendChild(svgHex);
+        break;
+    }
+    
+    if (glowEffect && (shape === 'circle' || shape === 'square')) {
+      particle.style.boxShadow = `0 0 ${size/2}px ${color}`;
+    }
+    
+    container.appendChild(particle);
+    
+    particle.style.left = `${Math.random() * 100}%`;
+    particle.style.top = `${Math.random() * 100}%`;
+    
+    const timeline = anime.timeline();
+    
+    timeline.add({
+      targets: particle,
+      opacity: [0, Math.random() * 0.5 + 0.3],
+      duration: 800,
+      easing: 'easeInOutQuad'
+    });
+    
+    timeline.add({
+      targets: particle,
+      translateX: () => anime.random(-50, 50) + 'px',
+      translateY: () => anime.random(-50, 50) + 'px',
+      rotate: () => anime.random(-360, 360),
+      scale: () => [anime.random(0.8, 1.2), anime.random(0.8, 1.2)],
+      opacity: () => [anime.random(0.3, 0.8), anime.random(0.3, 0.8)],
+      easing: 'easeInOutSine',
+      duration: () => anime.random(minSpeed, maxSpeed),
+      complete: (anim) => {
+        const particle = anim.animatables[0].target;
+        
+        anime({
+          targets: particle,
+          translateX: () => anime.random(-50, 50) + 'px',
+          translateY: () => anime.random(-50, 50) + 'px',
+          rotate: () => anime.random(-360, 360),
+          scale: () => anime.random(0.8, 1.2),
+          opacity: () => anime.random(0.3, 0.8),
+          easing: 'easeInOutSine',
+          duration: () => anime.random(minSpeed, maxSpeed),
+          complete: function(anim) {
+            anim.complete = () => {
+              this.complete(anim);
+            };
+            anim.restart();
+          }
+        });
+      }
+    });
+    
+    if (interactOnHover) {
+      container.addEventListener('mousemove', (e) => {
+        const rect = container.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        
+        const particles = container.children;
+        Array.from(particles).forEach((p: Element) => {
+          const particleElement = p as HTMLElement;
+          const particleRect = particleElement.getBoundingClientRect();
+          const particleCenterX = (particleRect.left + particleRect.right) / 2 - rect.left;
+          const particleCenterY = (particleRect.top + particleRect.bottom) / 2 - rect.top;
+          
+          const dx = mouseX - particleCenterX;
+          const dy = mouseY - particleCenterY;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance < 100) {
+            const angle = Math.atan2(dy, dx);
+            const pushX = Math.cos(angle) * (100 - distance) * 0.2;
+            const pushY = Math.sin(angle) * (100 - distance) * 0.2;
+            
+            anime({
+              targets: particleElement,
+              translateX: `+=${-pushX}`,
+              translateY: `+=${-pushY}`,
+              easing: 'easeOutElastic(1, .6)',
+              duration: 800
+            });
+          }
+        });
+      });
+    }
+  }
+  
+  return {
+    particles: container.children,
+    container
+  };
+};
+
+// Added: 3D perspective effect for elements
+export const apply3DEffect = (target: AnimationTarget, intensity: number = 10) => {
+  let element: Element | null = null;
+  
+  if (typeof target === 'string') {
+    element = document.querySelector(target);
+  } else if (target instanceof Element) {
+    element = target;
+  } else if (target instanceof NodeList && target.length > 0) {
+    element = target[0] as Element;
+  }
+  
+  if (!element) {
+    console.error('3D effect could not find target element');
+    return;
+  }
+  
+  if (element.parentElement) {
+    element.parentElement.style.perspective = '1000px';
+  }
+  
+  (element as HTMLElement).style.transition = 'transform 0.3s ease';
+  
+  const handleMouseMove = (e: MouseEvent) => {
+    const rect = element!.getBoundingClientRect();
+    const centerX = (rect.left + rect.right) / 2;
+    const centerY = (rect.top + rect.bottom) / 2;
+    
+    const rotateY = ((e.clientX - centerX) / rect.width) * intensity;
+    const rotateX = -((e.clientY - centerY) / rect.height) * intensity;
+    
+    (element as HTMLElement).style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  };
+  
+  const handleMouseLeave = () => {
+    (element as HTMLElement).style.transform = 'rotateX(0deg) rotateY(0deg)';
+  };
+  
+  element.addEventListener('mousemove', handleMouseMove);
+  element.addEventListener('mouseleave', handleMouseLeave);
+  
+  return () => {
+    element!.removeEventListener('mousemove', handleMouseMove);
+    element!.removeEventListener('mouseleave', handleMouseLeave);
+  };
 };
