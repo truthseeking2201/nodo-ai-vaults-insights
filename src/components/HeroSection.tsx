@@ -1,16 +1,51 @@
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
 import { Hexagon, CircleDollarSign, Sparkles } from 'lucide-react';
+import HeroAnimationBackground from './HeroAnimationBackground';
+import { fadeIn, staggerFadeIn } from '@/lib/animations';
 
 const HeroSection = () => {
+  const statsRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const subHeadingRef = useRef<HTMLDivElement>(null);
+  const buttonsRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    // Execute staggered animations on component mount
+    const statsElements = statsRef.current?.querySelectorAll('.stat-item');
+    
+    // Animate the heading with a slight delay
+    if (headingRef.current) {
+      fadeIn(headingRef.current, 800, 100);
+    }
+    
+    // Animate the subheading with a slight delay
+    if (subHeadingRef.current) {
+      fadeIn(subHeadingRef.current, 800, 300);
+    }
+    
+    // Animate the buttons with a slight delay
+    if (buttonsRef.current) {
+      fadeIn(buttonsRef.current, 800, 500);
+    }
+    
+    // Staggered animation for stats
+    if (statsElements) {
+      staggerFadeIn(statsElements, 100, 800);
+    }
+  }, []);
+
   return (
     <div className="relative pt-32 pb-24 overflow-hidden">
+      {/* Animated Background */}
+      <HeroAnimationBackground />
+      
       <div className="container mx-auto px-6 md:px-12 relative z-10">
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
           <div className="flex items-center mb-6 gap-3">
-            <div className="relative">
+            <div className="relative animate-pulse-glow">
               <Hexagon className="w-8 h-8 text-nova" />
               <div className="absolute inset-0 bg-nova/30 rounded-md blur-md opacity-70"></div>
             </div>
@@ -19,7 +54,7 @@ const HeroSection = () => {
             </span>
           </div>
           
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">
+          <h1 ref={headingRef} className="text-4xl md:text-6xl font-bold mb-6">
             <span className="text-gradient block">Smart DeFi Solutions</span>
             <span className="text-gradient-nova relative group block">
               Powered by 
@@ -30,12 +65,12 @@ const HeroSection = () => {
             </span>
           </h1>
           
-          <p className="text-lg md:text-xl text-white/80 max-w-2xl mb-8">
+          <p ref={subHeadingRef} className="text-lg md:text-xl text-white/80 max-w-2xl mb-8">
             Automate your investments with cutting-edge AI strategies designed for 
             consistent returns in the evolving crypto landscape.
           </p>
           
-          <div className="flex flex-col sm:flex-row items-center gap-6">
+          <div ref={buttonsRef} className="flex flex-col sm:flex-row items-center gap-6">
             <Button 
               className="btn-gradient-nova px-8 py-6 rounded-md relative overflow-hidden group shadow-lg shadow-nova/20"
               asChild
@@ -67,9 +102,9 @@ const HeroSection = () => {
             </Link>
           </div>
           
-          <div className="mt-16 glass-card rounded-2xl p-6 max-w-3xl w-full shadow-lg shadow-nova/5 card-hover-effect backdrop-blur-md">
+          <div ref={statsRef} className="mt-16 glass-card rounded-2xl p-6 max-w-3xl w-full shadow-lg shadow-nova/5 card-hover-effect backdrop-blur-md">
             <div className="grid grid-cols-3 gap-6">
-              <div className="text-center relative">
+              <div className="text-center relative stat-item">
                 <div className="text-2xl md:text-3xl font-bold text-white mb-1 flex items-center justify-center group">
                   <span className="mr-1">$27</span>
                   <span className="relative">
@@ -80,7 +115,7 @@ const HeroSection = () => {
                 <div className="text-sm text-white/70">Total Value Locked</div>
                 <div className="absolute top-0 right-0 w-px h-full bg-white/10 hidden md:block"></div>
               </div>
-              <div className="text-center relative">
+              <div className="text-center relative stat-item">
                 <div className="text-2xl md:text-3xl font-bold text-white mb-1 group">
                   <span className="relative">
                     <span>7.8%</span>
@@ -90,7 +125,7 @@ const HeroSection = () => {
                 <div className="text-sm text-white/70">Avg. Monthly Return</div>
                 <div className="absolute top-0 right-0 w-px h-full bg-white/10 hidden md:block"></div>
               </div>
-              <div className="text-center">
+              <div className="text-center stat-item">
                 <div className="text-2xl md:text-3xl font-bold text-aero mb-1 group">
                   <span className="relative">
                     <span>100%</span>
