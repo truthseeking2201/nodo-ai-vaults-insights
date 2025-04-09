@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { LineChart, ArrowRight, InfoIcon, Clock, ChevronDown, Sparkles, TrendingUp, Shield, ExternalLink, Wallet, ChevronLeft, ChevronRight } from 'lucide-react';
+import { LineChart, ArrowRight, InfoIcon, Clock, ChevronDown, Sparkles, TrendingUp, Shield, ExternalLink, Wallet, ChevronLeft, ChevronRight, TrendingDown, ArrowUpRight } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DepositDialog from '@/components/dashboard/DepositDialog';
@@ -117,6 +116,21 @@ const Dashboard = () => {
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [showDepositDialog, setShowDepositDialog] = useState(false);
   
+  // User portfolio data - in a real app this would come from an API
+  const userPortfolio = {
+    initialInvestment: 5000,
+    currentValue: 5750,
+    profitLoss: 750,
+    profitLossPercentage: 15,
+    deposits: [
+      { date: '2025-03-01', amount: 3000 },
+      { date: '2025-03-05', amount: 2000 }
+    ],
+    averageNav: 108.25,
+    totalYield: 750,
+    yieldPercentage: 15
+  };
+  
   const handleConnectWallet = () => {
     setIsWalletConnected(true);
   };
@@ -212,6 +226,51 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
+
+          {/* Vault Selection Cards */}
+          <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+            {strategies.map((strategy, index) => (
+              <Card 
+                key={strategy.id}
+                className={`transition-all cursor-pointer border ${
+                  selectedStrategyIndex === index 
+                    ? `border-${strategy.colorAccent} bg-${strategy.colorAccent}/10` 
+                    : 'border-white/10 bg-nodo-dark hover:bg-white/5'
+                }`}
+                onClick={() => setSelectedStrategyIndex(index)}
+              >
+                <div className="p-4">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${strategy.color}`}>
+                      {strategy.icon}
+                    </div>
+                    <div>
+                      <h3 className="font-bold">{strategy.name}</h3>
+                      <span className="text-xs text-white/60">{strategy.type}</span>
+                    </div>
+                  </div>
+                  <p className="text-sm text-white/70 mb-3 line-clamp-2">{strategy.description}</p>
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <div className="text-xs text-white/60">Current APY</div>
+                      <div className="font-semibold text-green-400">{strategy.apy}</div>
+                    </div>
+                    <Button 
+                      size="sm" 
+                      className={`bg-${strategy.colorAccent} hover:bg-${strategy.colorAccent}/90`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedStrategyIndex(index);
+                        handleDepositClick();
+                      }}
+                    >
+                      {isWalletConnected ? 'Deposit' : 'Select'}
+                    </Button>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2">
@@ -238,6 +297,160 @@ const Dashboard = () => {
                       <div className="text-sm text-white/60">{selectedStrategy.tvlValue}</div>
                     </div>
                   </div>
+                </div>
+              </Card>
+              
+              {/* Enhanced Performance Metrics */}
+              <Card className="glass-card mb-6 border border-white/10">
+                <div className="p-6">
+                  <h3 className="text-lg font-bold mb-4">Your Performance</h3>
+                  
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div className="bg-white/5 p-4 rounded-lg">
+                      <div className="text-xs text-white/60 mb-1">Initial Investment</div>
+                      <div className="text-lg font-semibold">${userPortfolio.initialInvestment.toLocaleString()}</div>
+                    </div>
+                    
+                    <div className="bg-white/5 p-4 rounded-lg">
+                      <div className="text-xs text-white/60 mb-1">Current Value</div>
+                      <div className="text-lg font-semibold">${userPortfolio.currentValue.toLocaleString()}</div>
+                    </div>
+                    
+                    <div className="bg-white/5 p-4 rounded-lg">
+                      <div className="text-xs text-white/60 mb-1">Profit/Loss</div>
+                      <div className="flex items-center gap-2">
+                        <div className={`text-lg font-semibold ${userPortfolio.profitLoss >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                          ${userPortfolio.profitLoss.toLocaleString()}
+                        </div>
+                        <div className={`flex items-center text-xs ${userPortfolio.profitLoss >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                          {userPortfolio.profitLoss >= 0 ? <ArrowUpRight className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+                          {userPortfolio.profitLossPercentage}%
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="bg-white/5 p-4 rounded-lg">
+                      <div className="text-xs text-white/60 mb-1">Average NAV</div>
+                      <div className="text-lg font-semibold">${userPortfolio.averageNav}</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="border-t border-white/10">
+                  <Tabs defaultValue="historic" className="w-full">
+                    <div className="px-6 pt-4">
+                      <TabsList className="bg-white/5 grid w-full grid-cols-2">
+                        <TabsTrigger value="historic">Historic</TabsTrigger>
+                        <TabsTrigger value="compare">Compare</TabsTrigger>
+                      </TabsList>
+                    </div>
+                    <TabsContent value="historic" className="p-6">
+                      <div className="mb-4 grid grid-cols-2 gap-4">
+                        <div>
+                          <div className="text-sm text-white/60 mb-1">Total Yield</div>
+                          <div className="text-lg font-semibold text-green-400">+${userPortfolio.totalYield}</div>
+                          <div className="text-xs text-green-400">+{userPortfolio.yieldPercentage}% Return</div>
+                        </div>
+                        <div>
+                          <div className="text-sm text-white/60 mb-1">Time Period</div>
+                          <div className="text-lg font-semibold">15 Days</div>
+                          <div className="text-xs text-white/60">Since first deposit</div>
+                        </div>
+                      </div>
+                      
+                      <div className="h-60 relative">
+                        <ChartContainer
+                          className="h-60"
+                          config={{
+                            value: {
+                              theme: {
+                                light: "#10b981",
+                                dark: "#10b981"
+                              }
+                            },
+                            baseline: {
+                              theme: {
+                                light: "rgba(255,255,255,0.1)",
+                                dark: "rgba(255,255,255,0.1)"
+                              }
+                            }
+                          }}
+                        >
+                          <AreaChart data={performanceData}>
+                            <defs>
+                              <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+                                <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                              </linearGradient>
+                            </defs>
+                            <XAxis 
+                              dataKey="date"
+                              tick={{ fill: '#9ca3af' }}
+                              tickLine={{ stroke: '#4b5563' }}
+                              tickFormatter={(value) => new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                            />
+                            <YAxis 
+                              tick={{ fill: '#9ca3af' }}
+                              tickLine={{ stroke: '#4b5563' }}
+                              domain={['dataMin - 5', 'dataMax + 5']}
+                              tickFormatter={(value) => `$${value}`}
+                            />
+                            <Tooltip 
+                              content={({ active, payload }) => {
+                                if (active && payload && payload.length) {
+                                  const date = payload[0].payload.date;
+                                  const value = payload[0].value;
+                                  const initialValue = 100;
+                                  const percentChange = ((value - initialValue) / initialValue) * 100;
+                                  
+                                  // Find if there was a deposit on this date
+                                  const depositOnDate = userPortfolio.deposits.find(
+                                    deposit => deposit.date === date
+                                  );
+                                  
+                                  return (
+                                    <div className="bg-nodo-dark border border-white/20 text-white p-3 rounded shadow-lg">
+                                      <p className="text-xs text-white/70 mb-1">
+                                        {new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                      </p>
+                                      <p className="text-sm font-semibold mb-1">
+                                        Value: ${value}
+                                      </p>
+                                      <p className={`text-xs ${percentChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                                        {percentChange >= 0 ? '+' : ''}{percentChange.toFixed(2)}% from initial
+                                      </p>
+                                      {depositOnDate && (
+                                        <p className="text-xs mt-2 pt-2 border-t border-white/10">
+                                          <span className="text-white/70">Deposit: </span>
+                                          <span className="font-medium">${depositOnDate.amount}</span>
+                                        </p>
+                                      )}
+                                    </div>
+                                  );
+                                }
+                                return null;
+                              }}
+                            />
+                            <Area 
+                              type="monotone" 
+                              dataKey="value" 
+                              stroke="#10b981" 
+                              fillOpacity={1} 
+                              fill="url(#colorValue)" 
+                            />
+                          </AreaChart>
+                        </ChartContainer>
+                      </div>
+                    </TabsContent>
+                    <TabsContent value="compare" className="p-6">
+                      <div className="h-60 relative bg-white/5 rounded-lg flex items-center justify-center">
+                        <div className="text-center">
+                          <p className="text-white/60 mb-2">Comparison with other strategies</p>
+                          <Button variant="outline" className="bg-transparent border-white/20 text-white">Compare</Button>
+                        </div>
+                      </div>
+                    </TabsContent>
+                  </Tabs>
                 </div>
               </Card>
               
@@ -305,7 +518,7 @@ const Dashboard = () => {
                               content={({ active, payload }) => {
                                 if (active && payload && payload.length) {
                                   return (
-                                    <div className="bg-nodo-dark border border-white/20 text-white p-2 rounded shadow-lg">
+                                    <div className="bg-nodo-dark border border-white/20 text-white p-3 rounded shadow-lg">
                                       <p className="text-xs text-white/70">
                                         {new Date(payload[0].payload.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                                       </p>

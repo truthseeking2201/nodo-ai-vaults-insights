@@ -6,14 +6,8 @@ import { CircleDollarSign } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { 
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Label } from '@/components/ui/label';
+import { Card } from "@/components/ui/card";
 
 interface DepositDialogProps {
   open: boolean;
@@ -44,7 +38,7 @@ const DepositDialog: React.FC<DepositDialogProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px] bg-nodo-darker border border-white/10 text-white">
+      <DialogContent className="sm:max-w-[500px] bg-nodo-darker border border-white/10 text-white">
         <DialogHeader>
           <div className="flex items-center gap-2">
             <div className={`w-8 h-8 rounded-full ${selectedVault.color} flex items-center justify-center`}>
@@ -59,29 +53,36 @@ const DepositDialog: React.FC<DepositDialogProps> = ({
         
         {vaults.length > 0 && onVaultChange && (
           <div className="mb-4">
-            <Label className="text-sm font-medium">Select Vault</Label>
-            <Select
-              value={selectedVault.id}
-              onValueChange={onVaultChange}
-            >
-              <SelectTrigger className="bg-nodo-dark border-white/20 text-white">
-                <SelectValue placeholder="Select a vault" />
-              </SelectTrigger>
-              <SelectContent className="bg-nodo-darker border-white/10 text-white">
-                {vaults.map((vault) => (
-                  <SelectItem 
-                    key={vault.id} 
-                    value={vault.id}
-                    className="hover:bg-white/10 focus:bg-white/10 text-white"
-                  >
+            <Label className="text-sm font-medium mb-2 block">Select a Vault</Label>
+            <div className="grid grid-cols-1 gap-3">
+              {vaults.map((vault) => (
+                <Card
+                  key={vault.id}
+                  className={`p-3 border cursor-pointer transition-all ${
+                    selectedVault.id === vault.id 
+                      ? `bg-${vault.colorAccent}/20 border-${vault.colorAccent}/50` 
+                      : 'bg-nodo-dark border-white/10 hover:bg-white/5'
+                  }`}
+                  onClick={() => onVaultChange(vault.id)}
+                >
+                  <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <div className={`w-4 h-4 rounded-full ${vault.color} flex items-center justify-center`}></div>
-                      <span>{vault.name}</span>
+                      <div className={`w-6 h-6 rounded-full ${vault.color} flex items-center justify-center`}>
+                        {vault.icon}
+                      </div>
+                      <div>
+                        <p className="font-medium">{vault.name}</p>
+                        <p className="text-xs text-white/60">{vault.type}</p>
+                      </div>
                     </div>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+                    <div className="text-right">
+                      <p className="font-medium text-green-400">{vault.apy}</p>
+                      <p className="text-xs text-white/60">APY</p>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
           </div>
         )}
         
