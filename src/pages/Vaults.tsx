@@ -9,7 +9,6 @@ import VaultDetails from '@/components/vaults/VaultDetails';
 import VaultSelector, { VaultOption } from '@/components/vaults/VaultSelector';
 import { useToast } from '@/hooks/use-toast';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { VaultTabs } from '@/components/dashboard/VaultTabs';
 
 // Extended vault type with all required properties
 interface ExtendedVaultOption extends VaultOption {
@@ -288,10 +287,7 @@ const Vaults = () => {
           
           {/* Additional Interactive Tabs */}
           <div className="mb-10">
-            <VaultTabs
-              selectedVault={selectedVault}
-              onSelectVault={handleSelectVault}
-            />
+            {/* VaultTabs component */}
           </div>
           
           {/* Content Tabs for Overview, Analytics, History */}
