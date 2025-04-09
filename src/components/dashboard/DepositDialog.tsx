@@ -60,6 +60,13 @@ const DepositDialog: React.FC<DepositDialogProps> = ({
 
   if (!selectedVault) return null;
 
+  // Helper function to calculate the projected monthly yield
+  const calculateMonthlyYield = (amount: string, apy: string): string => {
+    const numericAmount = parseFloat(amount || '0');
+    const numericApy = parseFloat(apy?.replace('%', '') || '0');
+    return (numericAmount * (numericApy / 100 / 12)).toFixed(2);
+  };
+
   return (
     <Dialog open={open} onOpenChange={(isOpen) => {
       // Reset form and state when closing dialog
@@ -183,7 +190,9 @@ const DepositDialog: React.FC<DepositDialogProps> = ({
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-white/70">Projected monthly yield:</span>
-                      <span className="font-medium text-white">${Number(form.getValues().amount || 0) * (parseFloat(selectedVault.apy) / 100 / 12).toFixed(2)}</span>
+                      <span className="font-medium text-white">
+                        ${calculateMonthlyYield(form.getValues().amount, selectedVault.apy)}
+                      </span>
                     </div>
                   </div>
                 </div>
