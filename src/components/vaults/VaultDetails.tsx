@@ -2,44 +2,103 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { ArrowRight, GaugeCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
+import { 
+  LineChart, 
+  Line, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer, 
+  Area, 
+  ComposedChart, 
+  Legend,
+  ReferenceLine
+} from 'recharts';
 
 interface VaultDetailsProps {
   vault: any;
 }
 
 const VaultDetails: React.FC<VaultDetailsProps> = ({ vault }) => {
-  // Generate sample performance data for the chart
-  const generateChartData = () => {
-    const days = 10;
+  // Generate detailed performance data for the chart
+  const generateDetailedChartData = () => {
+    const days = 30;
     const data = [];
-    let value = 100;
+    let baseValue = 100;
+    let volume = 5000;
     
+    // Simulate more realistic market movement
     for (let i = 0; i < days; i++) {
-      value = value + (Math.random() * 0.5) - 0.1;
+      // Create more realistic fluctuations with some trends
+      const dayOfWeek = i % 7;
+      const isWeekend = dayOfWeek >= 5;
+      const trendFactor = Math.sin(i / 5) * 0.3; // Cyclic trend component
+      
+      // More variance on certain days
+      const volatilityFactor = isWeekend ? 0.3 : 0.5;
+      const marketMovement = (Math.random() - 0.45 + trendFactor) * volatilityFactor;
+      
+      // Simulate volume changes based on price movement
+      volume = volume + (volume * (Math.random() * 0.08 - 0.04));
+      const volumeChange = Math.abs(marketMovement * volume * 0.7);
+      
+      baseValue = baseValue * (1 + marketMovement / 100);
+      
+      // Calculate market vs vault performance (vault slightly outperforms market)
+      const marketValue = baseValue * (1 - 0.05 * Math.random());
+      
       data.push({
-        day: i,
-        value: value.toFixed(2)
+        day: i + 1,
+        date: new Date(2023, 3, i + 1).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        value: parseFloat(baseValue.toFixed(2)),
+        marketValue: parseFloat(marketValue.toFixed(2)),
+        volume: Math.round(volumeChange),
+        earnings: parseFloat((baseValue - (i === 0 ? 100 : data[i-1]?.value || 100)).toFixed(3))
       });
     }
     
     return data;
   };
   
-  const chartData = generateChartData();
-  const minValue = Math.min(...chartData.map(d => parseFloat(d.value))) - 0.5;
-  const maxValue = Math.max(...chartData.map(d => parseFloat(d.value))) + 0.5;
+  const detailedChartData = generateDetailedChartData();
+  const minValue = Math.min(...detailedChartData.map(d => Math.min(d.value, d.marketValue))) - 1;
+  const maxValue = Math.max(...detailedChartData.map(d => Math.max(d.value, d.marketValue))) + 1;
+  
+  // Calculate stats from the chart data
+  const startValue = detailedChartData[0].value;
+  const endValue = detailedChartData[detailedChartData.length - 1].value;
+  const percentChange = ((endValue - startValue) / startValue * 100).toFixed(2);
+  const isPositive = parseFloat(percentChange) >= 0;
 
   return (
     <div>
-      {/* Overview Section - Updated for Nodo */}
+      {/* Overview Section with Deposit Button */}
       <div className="mb-12">
-        <h2 className="text-2xl font-bold text-white mb-4">nodo <span className="text-gradient-nova">vault overview</span></h2>
-        <p className="text-white/80 max-w-4xl">
-          {vault.description}
-        </p>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
+          <div>
+            <h2 className="text-2xl font-bold text-white mb-4">nodo <span className="text-gradient-nova">vault overview</span></h2>
+            <p className="text-white/80 max-w-4xl">
+              {vault.description}
+            </p>
+          </div>
+          
+          {/* Deposit Button */}
+          <Button 
+            className={`mt-4 md:mt-0 bg-${vault.color.split(' ')[1]} hover:bg-${vault.color.split(' ')[1]}/90 text-white px-8`}
+            asChild
+          >
+            <Link to={`/dashboard?vault=${vault.id}`} className="flex items-center gap-2">
+              <span>Deposit Now</span>
+              <ArrowRight size={16} />
+            </Link>
+          </Button>
+        </div>
       </div>
       
-      {/* Performance Chart - Updated with Nodo styling */}
+      {/* Enhanced Performance Chart - Updated with detailed chart */}
       <Card className="glass-card p-8 rounded-xl border border-white/10 mb-12">
         <div className="grid grid-cols-1 md:grid-cols-3 mb-6">
           <div>
@@ -56,60 +115,127 @@ const VaultDetails: React.FC<VaultDetailsProps> = ({ vault }) => {
           </div>
         </div>
         
-        {/* Chart - Nodo styled */}
-        <div className="h-60 relative">
-          {/* Chart Y-axis labels */}
-          <div className="absolute left-0 top-0 bottom-0 w-12 flex flex-col justify-between text-xs text-white/40 font-mono">
-            {Array.from({ length: 6 }).map((_, i) => {
-              const value = minValue + ((maxValue - minValue) / 5) * i;
-              return (
-                <div key={i} className="py-1">
-                  ${value.toFixed(2)}
-                </div>
-              );
-            })}
-          </div>
-          
-          {/* Chart area */}
-          <div className="absolute left-16 right-0 top-0 bottom-0">
-            {/* Horizontal grid lines */}
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div 
-                key={i} 
-                className="absolute w-full border-t border-white/5"
-                style={{ top: `${100 - (i * 20)}%` }}
-              ></div>
-            ))}
-            
-            {/* Path for the chart */}
-            <svg className="w-full h-full overflow-visible">
-              <path
-                d={`M ${chartData.map((point, i) => 
-                  `${(i / (chartData.length - 1)) * 100}% ${100 - ((parseFloat(point.value) - minValue) / (maxValue - minValue)) * 100}%`
-                ).join(' L ')}`}
-                fill="none"
-                stroke={vault.chartColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            
-            {/* X-axis labels */}
-            <div className="absolute bottom-0 left-0 right-0 flex justify-between text-xs text-white/40 font-mono">
-              {chartData.map((point, i) => {
-                // Only show some labels to avoid overcrowding
-                if (i % 2 === 0 || i === chartData.length - 1) {
-                  return (
-                    <div key={i}>
-                      {i + 1} Apr
-                    </div>
-                  );
-                }
-                return null;
-              })}
+        {/* Performance metrics */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+          <div className="bg-white/5 rounded-lg p-3">
+            <div className="text-xs text-white/60 mb-1">30d Change</div>
+            <div className={`text-lg font-bold ${isPositive ? 'text-green-400' : 'text-red-400'}`}>
+              {isPositive ? '+' : ''}{percentChange}%
             </div>
           </div>
+          <div className="bg-white/5 rounded-lg p-3">
+            <div className="text-xs text-white/60 mb-1">Volatility</div>
+            <div className="text-lg font-bold">Low</div>
+          </div>
+          <div className="bg-white/5 rounded-lg p-3">
+            <div className="text-xs text-white/60 mb-1">Sharpe Ratio</div>
+            <div className="text-lg font-bold">2.1</div>
+          </div>
+          <div className="bg-white/5 rounded-lg p-3">
+            <div className="text-xs text-white/60 mb-1">Max Drawdown</div>
+            <div className="text-lg font-bold">-3.2%</div>
+          </div>
+        </div>
+        
+        {/* Enhanced detailed chart */}
+        <div className="h-80 relative mt-6">
+          <ResponsiveContainer width="100%" height="100%">
+            <ComposedChart
+              data={detailedChartData}
+              margin={{ top: 10, right: 30, left: 5, bottom: 30 }}
+            >
+              <defs>
+                <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor={vault.chartColor} stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor={vault.chartColor} stopOpacity={0.1}/>
+                </linearGradient>
+                <linearGradient id="colorMarket" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#64748b" stopOpacity={0.6}/>
+                  <stop offset="95%" stopColor="#64748b" stopOpacity={0.1}/>
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" vertical={false} />
+              <XAxis 
+                dataKey="date" 
+                stroke="rgba(255,255,255,0.5)"
+                tick={{ fill: 'rgba(255,255,255,0.5)', fontSize: 10 }}
+                tickMargin={10}
+              />
+              <YAxis 
+                domain={[minValue, maxValue]}
+                stroke="rgba(255,255,255,0.5)"
+                tick={{ fill: 'rgba(255,255,255,0.5)', fontSize: 11 }}
+                tickFormatter={(value) => `$${value}`}
+                width={60}
+              />
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: '#1a1f2c', 
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  borderRadius: '8px', 
+                  color: 'white' 
+                }}
+                formatter={(value: any) => [`$${value}`, undefined]}
+              />
+              <Legend 
+                verticalAlign="top" 
+                height={36}
+                formatter={(value) => <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '12px' }}>{value}</span>}
+              />
+              
+              <ReferenceLine 
+                y={100} 
+                stroke="rgba(255,255,255,0.2)" 
+                strokeDasharray="3 3" 
+                label={{ 
+                  value: "Initial", 
+                  position: 'insideBottomRight', 
+                  fill: 'rgba(255,255,255,0.5)',
+                  fontSize: 10
+                }} 
+              />
+              
+              {/* Market average line */}
+              <Line 
+                type="monotone" 
+                dataKey="marketValue" 
+                name="Market Benchmark" 
+                stroke="#64748b" 
+                strokeWidth={1.5} 
+                dot={false}
+                activeDot={{ r: 4 }}
+              />
+              
+              {/* Main performance line */}
+              <Line 
+                type="monotone" 
+                dataKey="value" 
+                name={`${vault.name} Performance`} 
+                stroke={vault.chartColor} 
+                strokeWidth={2.5} 
+                dot={false}
+                activeDot={{ r: 6, stroke: 'white', strokeWidth: 2 }}
+              />
+              
+              {/* Area beneath for visual appeal */}
+              <Area 
+                type="monotone" 
+                dataKey="value" 
+                stroke="none" 
+                fillOpacity={1} 
+                fill="url(#colorValue)" 
+              />
+            </ComposedChart>
+          </ResponsiveContainer>
+        </div>
+        
+        {/* Time period selector */}
+        <div className="flex justify-end mt-4 space-x-2">
+          <Button variant="outline" size="sm" className="text-xs border-white/10 bg-white/5">7D</Button>
+          <Button variant="outline" size="sm" className="text-xs border-white/10 bg-white/5">14D</Button>
+          <Button variant="outline" size="sm" className="text-xs border-white/10 bg-nova/20">30D</Button>
+          <Button variant="outline" size="sm" className="text-xs border-white/10 bg-white/5">90D</Button>
+          <Button variant="outline" size="sm" className="text-xs border-white/10 bg-white/5">ALL</Button>
         </div>
       </Card>
       
