@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { LineChart as LineChartIcon, Sparkles, TrendingUp, BarChart3, PieChart, ShieldCheck, Hexagon, CircleDollarSign, ArrowRight, GaugeCircle, Clock, Layers, Coins } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import VaultDetails from '@/components/vaults/VaultDetails';
+import VaultSelector from '@/components/vaults/VaultSelector';
 
 // Define the vault data structure to reflect Nodo's offerings
 const vaults = [
@@ -20,7 +21,7 @@ const vaults = [
     inception: "26 Mar 23",
     apy: "5.8% - 8.4%",
     risk: "Low",
-    color: "bg-aero/20 text-aero",
+    color: "bg-amber-500/20 text-amber-500",
     shadow: "shadow-neon-aero",
     chartColor: "#10B981",
     portfolio: {
@@ -173,41 +174,17 @@ const Vaults = () => {
       <Navbar />
       <main className="relative z-10 container mx-auto">
         <div className="pt-32 pb-16 px-6 md:px-12">
-          {/* Vault Selector - Made more concise and Nodo-themed */}
-          <div className="flex justify-center mb-12">
-            <div className="glass-panel px-2 py-2 rounded-full flex items-center space-x-3">
-              {vaults.map((vault) => (
-                <button 
-                  key={vault.id}
-                  className={`flex items-center px-4 py-2 rounded-full transition-all ${
-                    selectedVault.id === vault.id 
-                      ? `bg-gradient-to-r ${
-                          vault.id === "vault-111" 
-                            ? "from-aero/90 to-aero/70"
-                            : vault.id === "vault-502"
-                            ? "from-orion/90 to-orion/70"
-                            : "from-nova/90 to-nova/70"
-                        } text-white shadow-lg` 
-                      : "hover:bg-white/5"
-                  }`}
-                  onClick={() => setSelectedVault(vault)}
-                >
-                  <div className={`w-8 h-8 rounded-full ${vault.color} flex items-center justify-center mr-3`}>
-                    {vault.icon}
-                  </div>
-                  <div className="text-left">
-                    <div className="text-xs opacity-70">{vault.type}</div>
-                    <div className="font-medium text-sm">{vault.name}</div>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
+          {/* Replace the old vault selector with our new component */}
+          <VaultSelector 
+            vaults={vaults}
+            selectedVault={selectedVault}
+            onSelectVault={setSelectedVault}
+          />
 
           {/* Vault Details - Content updated for Nodo */}
           <VaultDetails vault={selectedVault} />
           
-          {/* Nodo Staking & Rewards Section - Removed USDC 2X circle */}
+          {/* Nodo Staking & Rewards Section */}
           <div className="mt-16">
             <div className="glass-card p-8 rounded-xl border border-white/10 relative overflow-hidden">
               <div className="ml-6">
