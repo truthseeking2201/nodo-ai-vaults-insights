@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import VaultCard from './VaultCard';
 import { LineChart, BarChart3, ChevronRight, Sparkles, TrendingUp } from 'lucide-react';
 import DashboardVaultSelector from './DashboardVaultSelector';
+import { VaultOption } from '@/components/vaults/VaultSelector';
 
 interface VaultTabsProps {
   vaults: any[];
@@ -15,7 +16,7 @@ interface VaultTabsProps {
 }
 
 // Define dashboard vault options
-const dashboardVaults = [
+const dashboardVaults: VaultOption[] = [
   {
     id: "vault-1",
     name: "CosmosYield",
@@ -40,14 +41,18 @@ const dashboardVaults = [
 ];
 
 const VaultTabs: React.FC<VaultTabsProps> = ({ vaults, selectedAgent, onOpenDepositDialog }) => {
-  const [selectedVault, setSelectedVault] = useState(dashboardVaults[0]);
+  const [selectedVault, setSelectedVault] = useState<VaultOption>(dashboardVaults[0]);
+
+  const handleSelectVault = (vault: VaultOption) => {
+    setSelectedVault(vault);
+  };
 
   return (
     <div>
       <DashboardVaultSelector
         vaults={dashboardVaults}
         selectedVault={selectedVault}
-        onSelectVault={setSelectedVault}
+        onSelectVault={handleSelectVault}
       />
 
       <Tabs defaultValue="active" className="mb-8">

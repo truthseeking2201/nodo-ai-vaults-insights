@@ -2,7 +2,7 @@
 import React from 'react';
 import { Sparkles, LineChart, TrendingUp } from 'lucide-react';
 
-interface VaultOption {
+export interface VaultOption {
   id: string;
   name: string;
   type: string;

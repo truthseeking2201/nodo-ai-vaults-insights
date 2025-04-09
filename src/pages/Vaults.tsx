@@ -6,10 +6,36 @@ import { Button } from '@/components/ui/button';
 import { LineChart as LineChartIcon, Sparkles, TrendingUp, BarChart3, PieChart, ShieldCheck, Hexagon, CircleDollarSign, ArrowRight, GaugeCircle, Clock, Layers, Coins } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import VaultDetails from '@/components/vaults/VaultDetails';
-import VaultSelector from '@/components/vaults/VaultSelector';
+import VaultSelector, { VaultOption } from '@/components/vaults/VaultSelector';
+
+// Extended vault type with all required properties
+interface ExtendedVaultOption extends VaultOption {
+  description: string;
+  nav: string;
+  tvl: string;
+  inception: string;
+  apy: string;
+  risk: string;
+  shadow: string;
+  chartColor: string;
+  portfolio: {
+    icon: React.ReactNode;
+    releaseDate: string;
+  };
+  chain: {
+    name: string;
+    icon: React.ReactNode;
+  };
+  compatibility: React.ReactNode[];
+  features: {
+    title: string;
+    icon: React.ReactNode;
+    description: string;
+  }[];
+}
 
 // Define the vault data structure to reflect Nodo's offerings
-const vaults = [
+const vaults: ExtendedVaultOption[] = [
   {
     id: "vault-111",
     name: "CosmosYield",
@@ -161,7 +187,15 @@ const vaults = [
 ];
 
 const Vaults = () => {
-  const [selectedVault, setSelectedVault] = useState(vaults[0]);
+  const [selectedVault, setSelectedVault] = useState<ExtendedVaultOption>(vaults[0]);
+  
+  const handleSelectVault = (vault: VaultOption) => {
+    // Find the matching extended vault
+    const extendedVault = vaults.find(v => v.id === vault.id);
+    if (extendedVault) {
+      setSelectedVault(extendedVault);
+    }
+  };
   
   return (
     <div className="min-h-screen bg-nodo-darker text-white overflow-x-hidden">
@@ -178,7 +212,7 @@ const Vaults = () => {
           <VaultSelector 
             vaults={vaults}
             selectedVault={selectedVault}
-            onSelectVault={setSelectedVault}
+            onSelectVault={handleSelectVault}
           />
 
           {/* Vault Details - Content updated for Nodo */}

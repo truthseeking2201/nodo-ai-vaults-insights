@@ -1,14 +1,7 @@
 
 import React from 'react';
 import { Sparkles, LineChart, TrendingUp } from 'lucide-react';
-
-interface VaultOption {
-  id: string;
-  name: string;
-  type: string;
-  icon: React.ReactNode;
-  color: string;
-}
+import { VaultOption } from '@/components/vaults/VaultSelector';
 
 interface DashboardVaultSelectorProps {
   vaults: VaultOption[];
