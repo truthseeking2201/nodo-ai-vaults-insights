@@ -1,12 +1,15 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { LineChart as LineChartIcon, Sparkles, TrendingUp, BarChart3, PieChart, ShieldCheck, Hexagon, CircleDollarSign, ArrowRight, GaugeCircle, Clock, Layers, Coins } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { LineChart as LineChartIcon, Sparkles, TrendingUp, BarChart3, PieChart, ShieldCheck, Hexagon, CircleDollarSign, ArrowRight, GaugeCircle, Clock, Layers, Coins, AlertTriangle, Check, Eye, Filter } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import VaultDetails from '@/components/vaults/VaultDetails';
 import VaultSelector, { VaultOption } from '@/components/vaults/VaultSelector';
+import { useToast } from '@/hooks/use-toast';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { VaultTabs } from '@/components/dashboard/VaultTabs';
 
 // Extended vault type with all required properties
 interface ExtendedVaultOption extends VaultOption {
@@ -188,12 +191,51 @@ const vaults: ExtendedVaultOption[] = [
 
 const Vaults = () => {
   const [selectedVault, setSelectedVault] = useState<ExtendedVaultOption>(vaults[0]);
+  const [showAnimation, setShowAnimation] = useState(false);
+  const [activeTab, setActiveTab] = useState<'overview' | 'analytics' | 'history'>('overview');
+  const { toast } = useToast();
+  
+  // Simulated transaction history data
+  const transactionHistory = [
+    { id: 'tx1', date: '2025-04-01', type: 'Deposit', amount: '+500 USDC', status: 'Completed' },
+    { id: 'tx2', date: '2025-03-28', type: 'Withdrawal', amount: '-120 USDC', status: 'Completed' },
+    { id: 'tx3', date: '2025-03-22', type: 'Yield', amount: '+12.5 USDC', status: 'Completed' },
+    { id: 'tx4', date: '2025-03-15', type: 'Deposit', amount: '+300 USDC', status: 'Completed' },
+  ];
+  
+  useEffect(() => {
+    // Animation when switching vaults
+    setShowAnimation(true);
+    const timer = setTimeout(() => setShowAnimation(false), 500);
+    return () => clearTimeout(timer);
+  }, [selectedVault.id]);
   
   const handleSelectVault = (vault: VaultOption) => {
     // Find the matching extended vault
     const extendedVault = vaults.find(v => v.id === vault.id);
     if (extendedVault) {
       setSelectedVault(extendedVault);
+      
+      // Show toast notification when vault is changed
+      toast({
+        title: `${extendedVault.name} Selected`,
+        description: `You are now viewing the ${extendedVault.type} vault strategy.`,
+        variant: "default",
+      });
+    }
+  };
+
+  // Function to determine background color based on transaction type
+  const getTransactionBackground = (type: string) => {
+    switch (type) {
+      case 'Deposit':
+        return 'bg-emerald-500/10 text-emerald-400';
+      case 'Withdrawal':
+        return 'bg-amber-500/10 text-amber-400';
+      case 'Yield':
+        return 'bg-nova/10 text-nova';
+      default:
+        return 'bg-white/10';
     }
   };
   
@@ -206,22 +248,175 @@ const Vaults = () => {
       </div>
       
       <Navbar />
+      
+      {/* Header with interactive elements */}
+      <header className="relative z-10 pt-32 pb-6 px-6 md:px-12">
+        <div className="container mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
+            <div>
+              <h1 className="text-3xl md:text-4xl font-bold mb-2 flex items-center">
+                <span className="text-gradient-nova">nodo</span>&nbsp;vaults
+                <Badge variant="outline" className="ml-3 bg-white/5 text-xs">Beta</Badge>
+              </h1>
+              <p className="text-white/70 max-w-2xl">
+                Explore our AI-powered investment strategies with institutional-grade risk management and optimized returns.
+              </p>
+            </div>
+            
+            <div className="mt-4 md:mt-0 flex gap-3">
+              <Button variant="outline" className="border-white/10 bg-white/5 hover:bg-white/10">
+                <Filter className="mr-2 h-4 w-4" /> Filter
+              </Button>
+              <Button className="bg-gradient-to-r from-nova/80 to-orion/80 hover:opacity-90">
+                <Eye className="mr-2 h-4 w-4" /> Watch Tutorial
+              </Button>
+            </div>
+          </div>
+        </div>
+      </header>
+      
       <main className="relative z-10 container mx-auto">
-        <div className="pt-32 pb-16 px-6 md:px-12">
-          {/* Replace the old vault selector with our new component */}
-          <VaultSelector 
-            vaults={vaults}
-            selectedVault={selectedVault}
-            onSelectVault={handleSelectVault}
-          />
+        <div className="pb-16 px-6 md:px-12">
+          {/* Enhanced VaultSelector with VaultTabs */}
+          <div className="mb-8">
+            <VaultSelector 
+              vaults={vaults}
+              selectedVault={selectedVault}
+              onSelectVault={handleSelectVault}
+            />
+          </div>
+          
+          {/* Additional Interactive Tabs */}
+          <div className="mb-10">
+            <VaultTabs
+              selectedVault={selectedVault}
+              onSelectVault={handleSelectVault}
+            />
+          </div>
+          
+          {/* Content Tabs for Overview, Analytics, History */}
+          <div className="mb-6 border-b border-white/10">
+            <div className="flex">
+              <button 
+                onClick={() => setActiveTab('overview')} 
+                className={`px-4 py-2 relative ${activeTab === 'overview' ? 'text-white' : 'text-white/60 hover:text-white/80'}`}
+              >
+                Overview
+                {activeTab === 'overview' && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-nova"></span>}
+              </button>
+              <button 
+                onClick={() => setActiveTab('analytics')} 
+                className={`px-4 py-2 relative ${activeTab === 'analytics' ? 'text-white' : 'text-white/60 hover:text-white/80'}`}
+              >
+                Analytics
+                {activeTab === 'analytics' && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-nova"></span>}
+              </button>
+              <button 
+                onClick={() => setActiveTab('history')} 
+                className={`px-4 py-2 relative ${activeTab === 'history' ? 'text-white' : 'text-white/60 hover:text-white/80'}`}
+              >
+                Transaction History
+                {activeTab === 'history' && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-nova"></span>}
+              </button>
+            </div>
+          </div>
 
-          {/* Vault Details - Content updated for Nodo */}
-          <VaultDetails vault={selectedVault} />
+          {/* Tab Content with Animation */}
+          <div className={`transition-opacity duration-300 ${showAnimation ? 'opacity-0' : 'opacity-100'}`}>
+            {activeTab === 'overview' && (
+              <VaultDetails vault={selectedVault} />
+            )}
+            
+            {activeTab === 'analytics' && (
+              <div className="glass-card p-8 rounded-xl border border-white/10">
+                <h2 className="text-2xl font-bold mb-6">Advanced Analytics</h2>
+                <p className="text-white/70 mb-4">
+                  Detailed performance metrics and analysis for {selectedVault.name}.
+                </p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                  <div className="bg-white/5 p-4 rounded-lg">
+                    <h3 className="text-sm text-white/60 mb-2">Portfolio Correlation</h3>
+                    <div className="text-2xl font-bold">0.34</div>
+                    <div className="text-xs text-emerald-400">Low correlation to market</div>
+                  </div>
+                  
+                  <div className="bg-white/5 p-4 rounded-lg">
+                    <h3 className="text-sm text-white/60 mb-2">Sortino Ratio</h3>
+                    <div className="text-2xl font-bold">2.8</div>
+                    <div className="text-xs text-emerald-400">Above benchmark</div>
+                  </div>
+                  
+                  <div className="bg-white/5 p-4 rounded-lg">
+                    <h3 className="text-sm text-white/60 mb-2">Max Drawdown Recovery</h3>
+                    <div className="text-2xl font-bold">14 days</div>
+                    <div className="text-xs text-white/60">Avg. recovery time</div>
+                  </div>
+                </div>
+                
+                <div className="h-80 bg-white/5 rounded-lg flex items-center justify-center">
+                  <div className="text-white/40 text-center">
+                    <BarChart3 className="w-10 h-10 mx-auto mb-2" />
+                    <p>Detailed analytics charts</p>
+                    <p className="text-xs">(Premium feature)</p>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {activeTab === 'history' && (
+              <div className="glass-card p-8 rounded-xl border border-white/10">
+                <h2 className="text-2xl font-bold mb-6">Transaction History</h2>
+                <Table>
+                  <TableHeader>
+                    <TableRow className="border-white/10">
+                      <TableHead>Date</TableHead>
+                      <TableHead>Type</TableHead>
+                      <TableHead>Amount</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead></TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {transactionHistory.map((tx) => (
+                      <TableRow key={tx.id} className="border-white/10 hover:bg-white/5">
+                        <TableCell>{tx.date}</TableCell>
+                        <TableCell>
+                          <span className={`px-2 py-1 rounded-full text-xs ${getTransactionBackground(tx.type)}`}>
+                            {tx.type}
+                          </span>
+                        </TableCell>
+                        <TableCell className={tx.type === 'Withdrawal' ? 'text-amber-400' : 'text-emerald-400'}>
+                          {tx.amount}
+                        </TableCell>
+                        <TableCell className="flex items-center">
+                          <Check className="w-3 h-3 mr-1 text-emerald-400" />
+                          <span>{tx.status}</span>
+                        </TableCell>
+                        <TableCell>
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <ArrowRight className="h-4 w-4" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+                
+                <div className="mt-6 text-center">
+                  <Button variant="outline" className="border-white/10 bg-white/5 hover:bg-white/10">
+                    View All Transactions
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
           
           {/* Nodo Staking & Rewards Section */}
           <div className="mt-16">
-            <div className="glass-card p-8 rounded-xl border border-white/10 relative overflow-hidden">
-              <div className="ml-6">
+            <div className="glass-card p-8 rounded-xl border border-white/10 relative overflow-hidden group hover:border-nova/30 transition-colors duration-300">
+              <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-nova/10 rounded-full blur-[80px] opacity-60 group-hover:opacity-80 transition-opacity"></div>
+              <div className="ml-6 relative z-10">
                 <h2 className="text-2xl font-bold mb-2">
                   <span className="text-nova">nodo</span> staking & yield 
                   <span className="text-nova ml-2">boosters</span>
@@ -229,8 +424,8 @@ const Vaults = () => {
                 <p className="text-white/70 mb-4">
                   Stake NODO tokens to amplify your returns and unlock premium features
                 </p>
-                <Button variant="outline" className="bg-transparent border-nova/30 text-nova hover:bg-nova/10">
-                  learn more <ArrowRight className="ml-2 w-4 h-4" />
+                <Button variant="outline" className="bg-transparent border-nova/30 text-nova hover:bg-nova/10 group">
+                  learn more <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
                 </Button>
               </div>
             </div>
