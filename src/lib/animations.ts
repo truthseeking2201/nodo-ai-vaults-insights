@@ -117,10 +117,27 @@ export const animateGradient = (target: AnimationTarget, colors: string[], durat
   });
 };
 
-// Text scramble effect
+// Text scramble effect - Fixed to handle both string selectors and direct DOM element references
 export const textScramble = (target: AnimationTarget, finalText: string, duration: number = 2000) => {
   const characters = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
-  const originalText = document.querySelector(target as string)?.textContent || '';
+  
+  // Get the element regardless of whether target is a string selector or an Element
+  let element: Element | null = null;
+  
+  if (typeof target === 'string') {
+    element = document.querySelector(target);
+  } else if (target instanceof Element) {
+    element = target;
+  } else if (target instanceof NodeList && target.length > 0) {
+    element = target[0] as Element;
+  }
+  
+  if (!element) {
+    console.error('Text scramble could not find target element');
+    return { reset: () => {} };
+  }
+  
+  const originalText = element.textContent || '';
   let output = '';
   let frameRate = 30;
   let frame = 0;
@@ -140,7 +157,7 @@ export const textScramble = (target: AnimationTarget, finalText: string, duratio
       }
     }
     
-    document.querySelector(target as string)!.textContent = output;
+    element!.textContent = output;
     
     if (frame < frameRate) {
       frame++;
@@ -152,7 +169,7 @@ export const textScramble = (target: AnimationTarget, finalText: string, duratio
   
   return {
     reset: () => {
-      document.querySelector(target as string)!.textContent = originalText;
+      if (element) element.textContent = originalText;
     }
   };
 };
