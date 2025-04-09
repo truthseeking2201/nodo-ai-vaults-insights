@@ -13,7 +13,7 @@ import VaultDetails from '@/components/vaults/VaultDetails';
 const vaults = [
   {
     id: "vault-111",
-    name: "Nodo Stability Vault",
+    name: "Steady Cosmos Vault",
     type: "Yield Optimization",
     icon: <Sparkles className="w-5 h-5 text-white" />,
     description: "Designed for stable returns with minimal volatility. This Nodo vault focuses on secure yield generation through proven DeFi strategies, optimized for USDC holders seeking consistent passive income with institutional-grade risk management.",
@@ -62,7 +62,7 @@ const vaults = [
   },
   {
     id: "vault-502",
-    name: "Nodo Growth Engine",
+    name: "Quantum Yield Nexus",
     type: "DeFi Analyst",
     icon: <LineChartIcon className="w-5 h-5 text-white" />,
     description: "Nodo's quantitative strategy vault designed for higher returns. Leverages advanced AI algorithms and on-chain analytics to identify optimal trading opportunities across DeFi protocols. Suitable for investors seeking enhanced yield with managed risk exposure.",
@@ -111,7 +111,7 @@ const vaults = [
   },
   {
     id: "vault-703",
-    name: "Nodo Alpha Strategy",
+    name: "Phoenix Alpha Engine",
     type: "Market Maker",
     icon: <TrendingUp className="w-5 h-5 text-white" />,
     description: "Advanced trading strategy targeting alpha generation through sophisticated market-making algorithms. This Nodo vault utilizes high-frequency execution with optimized gas and MEV protection to capture spreads across decentralized exchanges.",

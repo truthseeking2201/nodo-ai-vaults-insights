@@ -89,7 +89,7 @@ const VaultsSection = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <VaultCard
-            name="Nodo Growth Engine"
+            name="Quantum Yield Nexus"
             type="DeFi Analyst"
             icon={<LineChart className="w-5 h-5 text-white" />}
             description="Nodo's quantitative strategy leveraging AI analytics for higher returns across DeFi protocols."
@@ -100,7 +100,7 @@ const VaultsSection = () => {
           />
           
           <VaultCard
-            name="Nodo Stability Vault"
+            name="Steady Cosmos Vault"
             type="Yield Optimization"
             icon={<Sparkles className="w-5 h-5 text-white" />}
             description="Designed for stable returns with minimal volatility. Focused on secure yield generation."
@@ -110,7 +110,7 @@ const VaultsSection = () => {
           />
           
           <VaultCard
-            name="Nodo Alpha Strategy"
+            name="Phoenix Alpha Engine"
             type="Market Maker"
             icon={<TrendingUp className="w-5 h-5 text-white" />}
             description="Advanced trading strategy targeting alpha generation through sophisticated market-making algorithms."

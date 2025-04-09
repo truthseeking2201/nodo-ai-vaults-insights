@@ -58,7 +58,7 @@ const VaultTabs: React.FC<VaultTabsProps> = ({ vaults, selectedAgent, onOpenDepo
                 </div>
                 <div>
                   <div className="text-xs opacity-70">Yield Optimization</div>
-                  <h3 className="font-bold">Nodo Stability Vault</h3>
+                  <h3 className="font-bold">Steady Cosmos Vault</h3>
                 </div>
               </div>
               <span className="text-aero font-mono">5.8% - 8.4% APY</span>
@@ -88,7 +88,7 @@ const VaultTabs: React.FC<VaultTabsProps> = ({ vaults, selectedAgent, onOpenDepo
                 </div>
                 <div>
                   <div className="text-xs opacity-70">DeFi Analyst</div>
-                  <h3 className="font-bold">Nodo Growth Engine</h3>
+                  <h3 className="font-bold">Quantum Yield Nexus</h3>
                 </div>
               </div>
               <span className="text-orion font-mono">8.6% - 12.4% APY</span>
