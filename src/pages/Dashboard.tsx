@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -730,3 +731,45 @@ const Dashboard = () => {
                       >
                         <Wallet className="w-4 h-4" />
                         Connect Wallet
+                      </Button>
+                    ) : (
+                      <Button 
+                        className="w-full bg-nova hover:bg-nova/90 text-white"
+                        onClick={() => setShowDepositDialog(true)}
+                      >
+                        Deposit
+                      </Button>
+                    )}
+                    
+                    <div className="flex items-center gap-2 justify-center mt-4 text-white/60 text-xs">
+                      <Clock className="w-4 h-4" />
+                      <span>You cannot undo your chosen strategy</span>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            )}
+          </div>
+        </div>
+      </main>
+      
+      {/* Deposit Dialog */}
+      <DepositDialog 
+        open={showDepositDialog} 
+        onOpenChange={setShowDepositDialog}
+        selectedVault={selectedStrategy}
+        primaryColor={selectedStrategy.colorAccent}
+        vaults={strategies}
+        onVaultChange={handleStrategyChange}
+        onSubmit={(values) => {
+          console.log("Deposit submitted:", values);
+          setShowDepositDialog(false);
+        }}
+      />
+      
+      <Footer />
+    </div>
+  );
+};
+
+export default Dashboard;
