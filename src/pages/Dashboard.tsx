@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -10,6 +9,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DepositDialog from '@/components/dashboard/DepositDialog';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { VaultOption } from '@/components/vaults/VaultSelector';
+import { useToast } from '@/hooks/use-toast';
+import TransactionHistory from '@/components/TransactionHistory';
 
 // Strategy data
 const strategies = [
@@ -111,11 +113,13 @@ const performanceData = [
 ];
 
 const Dashboard = () => {
+  const { toast } = useToast();
   const [selectedStrategyIndex, setSelectedStrategyIndex] = useState(0);
   const selectedStrategy = strategies[selectedStrategyIndex];
   const [showDepositPanel, setShowDepositPanel] = useState(true);
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [showDepositDialog, setShowDepositDialog] = useState(false);
+  const [showTransactionHistory, setShowTransactionHistory] = useState(false);
   
   // User portfolio data - in a real app this would come from an API
   const userPortfolio = {
@@ -134,6 +138,10 @@ const Dashboard = () => {
   
   const handleConnectWallet = () => {
     setIsWalletConnected(true);
+    toast({
+      title: "Wallet Connected",
+      description: "Your wallet has been successfully connected.",
+    });
   };
   
   const handleDepositClick = () => {
@@ -162,6 +170,29 @@ const Dashboard = () => {
       setSelectedStrategyIndex(index);
     }
   };
+
+  const handleVaultSubmit = (values: any) => {
+    console.log("Deposit submitted:", values);
+    setShowDepositDialog(false);
+    toast({
+      title: "Deposit Successful",
+      description: `${parseFloat(values.amount).toLocaleString()} USDC has been deposited.`,
+      duration: 5000,
+    });
+  };
+
+  const handleToggleTransactionHistory = () => {
+    setShowTransactionHistory(!showTransactionHistory);
+  };
+
+  const vaultOptions: VaultOption[] = strategies.map(strategy => ({
+    id: strategy.id,
+    name: strategy.name,
+    type: strategy.type,
+    icon: strategy.icon,
+    color: strategy.color,
+    colorAccent: strategy.colorAccent
+  }));
   
   return (
     <div className="min-h-screen bg-nodo-darker text-white">
@@ -221,8 +252,15 @@ const Dashboard = () => {
                   <ChevronRight className="w-4 h-4" />
                 </Button>
                 
-                <Button className="bg-nova hover:bg-nova/90 text-white" onClick={handleDepositClick}>
-                  {isWalletConnected ? 'Deposit' : 'Connect Wallet'}
+                <Button 
+                  className="bg-nova hover:bg-nova/90 text-white flex items-center gap-2" 
+                  onClick={handleDepositClick}
+                >
+                  {isWalletConnected ? (
+                    <>Deposit <Wallet className="w-4 h-4" /></>
+                  ) : (
+                    <>Connect Wallet <Wallet className="w-4 h-4" /></>
+                  )}
                 </Button>
               </div>
             </div>
@@ -584,8 +622,11 @@ const Dashboard = () => {
                 <div className="p-6">
                   <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-bold">Rebalancing activity</h3>
-                    <button className="text-white/50 hover:text-white">
-                      <ChevronDown className="w-5 h-5" />
+                    <button 
+                      className="text-white/50 hover:text-white"
+                      onClick={handleToggleTransactionHistory}
+                    >
+                      <ChevronDown className={`w-5 h-5 transition-transform ${showTransactionHistory ? 'rotate-180' : ''}`} />
                     </button>
                   </div>
                   
@@ -633,11 +674,20 @@ const Dashboard = () => {
                     ))}
                   </div>
                   
-                  <div className="mt-6 text-center">
-                    <button className="text-nova text-sm flex items-center gap-1 mx-auto">
-                      View all rebalances <ArrowRight className="w-4 h-4" />
-                    </button>
-                  </div>
+                  {showTransactionHistory ? (
+                    <TransactionHistory />
+                  ) : (
+                    <>
+                      <div className="mt-6 text-center">
+                        <button 
+                          className="text-nova text-sm flex items-center gap-1 mx-auto"
+                          onClick={handleToggleTransactionHistory}
+                        >
+                          View all rebalances <ArrowRight className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </>
+                  )}
                 </div>
               </Card>
               
@@ -671,6 +721,12 @@ const Dashboard = () => {
                   <div className="p-6">
                     <div className="flex justify-between items-center mb-4">
                       <h3 className="text-lg font-bold">Deposit</h3>
+                      <button 
+                        className="text-white/50 hover:text-white"
+                        onClick={() => setShowDepositPanel(!showDepositPanel)}
+                      >
+                        <ChevronDown className="w-5 h-5" />
+                      </button>
                     </div>
                     
                     <div className="mb-6">
@@ -698,6 +754,10 @@ const Dashboard = () => {
                           variant="outline" 
                           className="text-xs h-8 bg-white/10 border-white/20 hover:bg-white/20"
                           disabled={!isWalletConnected}
+                          onClick={() => {
+                            const input = document.querySelector('input[placeholder="0.00"]') as HTMLInputElement;
+                            if (input) input.value = "125000";
+                          }}
                         >
                           Max
                         </Button>
@@ -741,10 +801,7 @@ const Dashboard = () => {
         primaryColor={selectedStrategy.colorAccent}
         vaults={strategies}
         onVaultChange={handleStrategyChange}
-        onSubmit={(values) => {
-          console.log("Deposit submitted:", values);
-          setShowDepositDialog(false);
-        }}
+        onSubmit={handleVaultSubmit}
       />
       
       <Footer />

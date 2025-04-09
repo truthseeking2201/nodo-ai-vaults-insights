@@ -238,7 +238,6 @@ const DepositFlow: React.FC<DepositFlowProps> = ({ open, onOpenChange, vault }) 
                   <p className="text-white/70 text-sm mb-4">Please wait while we process your transaction</p>
                 </div>
                 
-                {/* Updated: Now using the indicatorClassName prop */}
                 <Progress 
                   value={progressValue} 
                   className="h-2 bg-white/10" 

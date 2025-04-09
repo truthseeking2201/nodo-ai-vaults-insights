@@ -8,6 +8,7 @@ export interface VaultOption {
   type: string;
   icon: React.ReactNode;
   color: string;
+  colorAccent?: string;
 }
 
 interface VaultSelectorProps {
