@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Hexagon, CircleDollarSign, Sparkles } from 'lucide-react';
 import anime from 'animejs';
 import { fadeIn, staggerFadeIn, pulseGlow, floatingElement } from '@/lib/animations';
+import AIProtocolAnimation from './AIProtocolAnimation';
 
 const HeroSection = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -80,68 +81,15 @@ const HeroSection = () => {
           });
         }, 600);
       }
-      
-      // Mouse parallax effect for background elements
-      const handleMouseMove = (e: MouseEvent) => {
-        if (!heroRef.current) return;
-        
-        const heroRect = heroRef.current.getBoundingClientRect();
-        const mouseX = e.clientX - heroRect.left;
-        const mouseY = e.clientY - heroRect.top;
-        
-        // Parallax for floating elements
-        anime({
-          targets: '.parallax-element',
-          translateX: function(el: Element, i: number) {
-            const depth = parseFloat(el.getAttribute('data-depth') || '0.03');
-            return (mouseX - heroRect.width / 2) * depth;
-          },
-          translateY: function(el: Element, i: number) {
-            const depth = parseFloat(el.getAttribute('data-depth') || '0.03');
-            return (mouseY - heroRect.height / 2) * depth;
-          },
-          duration: 300,
-          easing: 'easeOutQuad',
-        });
-        
-        // Update glow position subtly
-        anime({
-          targets: '.glow-element',
-          backgroundPosition: `${(mouseX / heroRect.width) * 100}% ${(mouseY / heroRect.height) * 100}%`,
-          duration: 1000,
-          easing: 'easeOutQuad',
-        });
-      };
-
-      document.addEventListener('mousemove', handleMouseMove);
-      
-      return () => {
-        document.removeEventListener('mousemove', handleMouseMove);
-      };
     }
   }, []);
 
   return (
     <div className="relative pt-32 pb-24 overflow-hidden" ref={heroRef}>
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 bg-neo-grid bg-neo-grid z-0 opacity-20 animated-bg"></div>
+      {/* AI Protocol Animation Background */}
+      <AIProtocolAnimation />
       
-      {/* Floating elements with Anime.js */}
-      <div className="floating-element parallax-element absolute top-24 left-20 w-8 h-8 border border-nova/50 rounded-md rotate-45 opacity-0" data-depth="0.05"></div>
-      <div className="floating-element parallax-element absolute bottom-32 right-40 w-12 h-12 border border-aero/30 rounded-full opacity-0" data-depth="0.03"></div>
-      <div className="floating-element parallax-element absolute top-40 right-32 w-6 h-6 border border-orion/40 rounded-md opacity-0" data-depth="0.07"></div>
-      <div className="floating-element parallax-element absolute bottom-1/4 left-1/3 w-10 h-10 border border-nova/20 rounded-full opacity-0" data-depth="0.02"></div>
-      <div className="floating-element parallax-element absolute top-1/3 right-1/5 w-8 h-8 border border-aero/30 rounded-md rotate-12 opacity-0" data-depth="0.04"></div>
-      
-      {/* Animated dots */}
-      <div className="absolute top-1/4 left-1/3 glow-dot w-2 h-2 rounded-full bg-nova/60"></div>
-      <div className="absolute bottom-1/3 right-1/4 glow-dot w-2 h-2 rounded-full bg-orion/60" style={{ animationDelay: '0.5s' }}></div>
-      <div className="absolute top-2/3 left-1/5 glow-dot w-2 h-2 rounded-full bg-aero/60" style={{ animationDelay: '1s' }}></div>
-      
-      {/* Glow effects */}
-      <div className="glow-element absolute top-1/4 left-1/4 w-64 h-64 bg-nova/20 rounded-full blur-[100px] -z-10 opacity-0"></div>
-      <div className="glow-element absolute bottom-1/4 right-1/4 w-72 h-72 bg-aero/10 rounded-full blur-[100px] -z-10 opacity-0"></div>
-      
+      {/* Content overlays the animation */}
       <div className="container mx-auto px-6 md:px-12 relative z-10">
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
           <div className="flex items-center mb-6 gap-3 hero-fade-in">
@@ -202,7 +150,7 @@ const HeroSection = () => {
             </Link>
           </div>
           
-          <div ref={statsRef} className="mt-16 glass-card rounded-2xl p-6 max-w-3xl w-full shadow-lg shadow-nova/5 card-hover-effect stagger-item">
+          <div ref={statsRef} className="mt-16 glass-card rounded-2xl p-6 max-w-3xl w-full shadow-lg shadow-nova/5 card-hover-effect stagger-item backdrop-blur-md">
             <div className="grid grid-cols-3 gap-6">
               <div className="text-center relative">
                 <div className="text-2xl md:text-3xl font-bold text-white mb-1 flex items-center justify-center group">
