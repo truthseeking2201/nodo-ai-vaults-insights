@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -66,23 +67,23 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// NODO AI Custom Colors
-				"nodo-dark": "#1A1F2C",
-				"nodo-darker": "#121520",
+				// NODO AI Custom Colors - Updated for golden-orange theme
+				"nodo-dark": "#1A1718",
+				"nodo-darker": "#12100F",
 				nova: {
-					DEFAULT: "#9b87f5",
-					light: "#d6bcfa",
-					dark: "#6E59A5",
+					DEFAULT: "#F97316", // Orange
+					light: "#FDBA74", // Light Orange
+					dark: "#C2410C", // Dark Orange
 				},
 				orion: {
-					DEFAULT: "#F97316",
-					light: "#FDBA74",
-					dark: "#C2410C",
+					DEFAULT: "#F59E0B", // Amber
+					light: "#FCD34D", // Light Amber
+					dark: "#B45309", // Dark Amber
 				},
 				aero: {
-					DEFAULT: "#10B981",
-					light: "#6EE7B7",
-					dark: "#047857",
+					DEFAULT: "#D97706", // Yellow
+					light: "#FBBF24", // Light Yellow
+					dark: "#92400E", // Dark Yellow
 				},
 			},
 			borderRadius: {
@@ -138,17 +139,17 @@ export default {
 				'neon-pulse': 'neon-pulse 2s infinite'
 			},
 			backgroundImage: {
-				'neo-grid': 'linear-gradient(rgba(155, 135, 245, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(155, 135, 245, 0.1) 1px, transparent 1px)',
+				'neo-grid': 'linear-gradient(rgba(249, 115, 22, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(249, 115, 22, 0.1) 1px, transparent 1px)',
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
 			},
 			backgroundSize: {
 				'neo-grid': '30px 30px',
 			},
 			boxShadow: {
-				'neon-glow': '0 0 5px rgba(155, 135, 245, 0.8), 0 0 10px rgba(155, 135, 245, 0.5)',
-				'neon-nova': '0 0 5px rgba(155, 135, 245, 0.8), 0 0 10px rgba(155, 135, 245, 0.5)',
-				'neon-orion': '0 0 5px rgba(249, 115, 22, 0.8), 0 0 10px rgba(249, 115, 22, 0.5)',
-				'neon-aero': '0 0 5px rgba(16, 185, 129, 0.8), 0 0 10px rgba(16, 185, 129, 0.5)',
+				'neon-glow': '0 0 5px rgba(249, 115, 22, 0.8), 0 0 10px rgba(249, 115, 22, 0.5)',
+				'neon-nova': '0 0 5px rgba(249, 115, 22, 0.8), 0 0 10px rgba(249, 115, 22, 0.5)',
+				'neon-orion': '0 0 5px rgba(245, 158, 11, 0.8), 0 0 10px rgba(245, 158, 11, 0.5)',
+				'neon-aero': '0 0 5px rgba(217, 119, 6, 0.8), 0 0 10px rgba(217, 119, 6, 0.5)',
 			},
 		}
 	},
