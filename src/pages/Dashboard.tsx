@@ -1,9 +1,10 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { LineChart, ArrowRight, InfoIcon, Clock, ChevronDown, Sparkles, TrendingUp, Shield, ExternalLink, Wallet } from 'lucide-react';
+import { LineChart, ArrowRight, InfoIcon, Clock, ChevronDown, Sparkles, TrendingUp, Shield, ExternalLink, Wallet, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DepositDialog from '@/components/dashboard/DepositDialog';
@@ -110,7 +111,8 @@ const performanceData = [
 ];
 
 const Dashboard = () => {
-  const [selectedStrategy, setSelectedStrategy] = useState(strategies[0]);
+  const [selectedStrategyIndex, setSelectedStrategyIndex] = useState(0);
+  const selectedStrategy = strategies[selectedStrategyIndex];
   const [showDepositPanel, setShowDepositPanel] = useState(true);
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [showDepositDialog, setShowDepositDialog] = useState(false);
@@ -124,6 +126,25 @@ const Dashboard = () => {
       setShowDepositDialog(true);
     } else {
       handleConnectWallet();
+    }
+  };
+  
+  const handlePreviousStrategy = () => {
+    setSelectedStrategyIndex((prev) => 
+      prev === 0 ? strategies.length - 1 : prev - 1
+    );
+  };
+
+  const handleNextStrategy = () => {
+    setSelectedStrategyIndex((prev) => 
+      prev === strategies.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  const handleStrategyChange = (strategyId: string) => {
+    const index = strategies.findIndex(strategy => strategy.id === strategyId);
+    if (index !== -1) {
+      setSelectedStrategyIndex(index);
     }
   };
   
@@ -158,9 +179,37 @@ const Dashboard = () => {
                 </div>
               </div>
               
-              <Button className="bg-nova hover:bg-nova/90 text-white" onClick={handleDepositClick}>
-                {isWalletConnected ? 'Deposit' : 'Connect Wallet'}
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button 
+                  variant="outline" 
+                  size="icon" 
+                  className="bg-transparent border-white/20 text-white rounded-full"
+                  onClick={handlePreviousStrategy}
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </Button>
+                
+                <Button 
+                  variant="outline"
+                  className="bg-transparent border-white/20 text-white"
+                  onClick={() => setShowDepositDialog(true)}
+                >
+                  Switch Vault
+                </Button>
+                
+                <Button 
+                  variant="outline" 
+                  size="icon" 
+                  className="bg-transparent border-white/20 text-white rounded-full"
+                  onClick={handleNextStrategy}
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </Button>
+                
+                <Button className="bg-nova hover:bg-nova/90 text-white" onClick={handleDepositClick}>
+                  {isWalletConnected ? 'Deposit' : 'Connect Wallet'}
+                </Button>
+              </div>
             </div>
           </div>
           
@@ -496,6 +545,8 @@ const Dashboard = () => {
         onOpenChange={setShowDepositDialog}
         selectedVault={selectedStrategy}
         primaryColor={selectedStrategy.colorAccent}
+        vaults={strategies}
+        onVaultChange={handleStrategyChange}
         onSubmit={(values) => {
           console.log("Deposit submitted:", values);
           setShowDepositDialog(false);
