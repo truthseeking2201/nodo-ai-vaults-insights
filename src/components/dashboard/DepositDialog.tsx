@@ -29,10 +29,10 @@ const DepositDialog: React.FC<DepositDialogProps> = ({ open, onOpenChange, selec
       <DialogContent className="sm:max-w-[425px] bg-nodo-darker border border-white/10 text-white">
         <DialogHeader>
           <div className="flex items-center gap-2">
-            <div className={`w-8 h-8 rounded-full ${selectedVault.iconBg} flex items-center justify-center`}>
+            <div className={`w-8 h-8 rounded-full ${selectedVault.color} flex items-center justify-center`}>
               {selectedVault.icon}
             </div>
-            <DialogTitle>Deposit to {selectedVault.title}</DialogTitle>
+            <DialogTitle>Deposit to {selectedVault.name}</DialogTitle>
           </div>
           <DialogDescription className="text-white/70">
             Make a deposit to start earning {selectedVault.apy} APY

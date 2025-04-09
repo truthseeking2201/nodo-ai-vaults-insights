@@ -1,12 +1,14 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { LineChart, ArrowRight, InfoIcon, Clock, ChevronDown, Sparkles, TrendingUp, Shield, ExternalLink } from 'lucide-react';
+import { LineChart, ArrowRight, InfoIcon, Clock, ChevronDown, Sparkles, TrendingUp, Shield, ExternalLink, Wallet } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import DepositDialog from '@/components/dashboard/DepositDialog';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 // Strategy data
 const strategies = [
@@ -88,9 +90,42 @@ const activityData = [
   }
 ];
 
+// Performance chart data
+const performanceData = [
+  { date: '2025-03-01', value: 100 },
+  { date: '2025-03-02', value: 102 },
+  { date: '2025-03-03', value: 101 },
+  { date: '2025-03-04', value: 103 },
+  { date: '2025-03-05', value: 104 },
+  { date: '2025-03-06', value: 106 },
+  { date: '2025-03-07', value: 105 },
+  { date: '2025-03-08', value: 107 },
+  { date: '2025-03-09', value: 109 },
+  { date: '2025-03-10', value: 108 },
+  { date: '2025-03-11', value: 110 },
+  { date: '2025-03-12', value: 112 },
+  { date: '2025-03-13', value: 114 },
+  { date: '2025-03-14', value: 113 },
+  { date: '2025-03-15', value: 116 },
+];
+
 const Dashboard = () => {
   const [selectedStrategy, setSelectedStrategy] = useState(strategies[0]);
   const [showDepositPanel, setShowDepositPanel] = useState(true);
+  const [isWalletConnected, setIsWalletConnected] = useState(false);
+  const [showDepositDialog, setShowDepositDialog] = useState(false);
+  
+  const handleConnectWallet = () => {
+    setIsWalletConnected(true);
+  };
+  
+  const handleDepositClick = () => {
+    if (isWalletConnected) {
+      setShowDepositDialog(true);
+    } else {
+      handleConnectWallet();
+    }
+  };
   
   return (
     <div className="min-h-screen bg-nodo-darker text-white">
@@ -123,8 +158,8 @@ const Dashboard = () => {
                 </div>
               </div>
               
-              <Button className="bg-nova hover:bg-nova/90 text-white">
-                Deposit
+              <Button className="bg-nova hover:bg-nova/90 text-white" onClick={handleDepositClick}>
+                {isWalletConnected ? 'Deposit' : 'Connect Wallet'}
               </Button>
             </div>
           </div>
@@ -181,13 +216,68 @@ const Dashboard = () => {
                       </TabsList>
                     </div>
                     <TabsContent value="historic" className="p-6">
-                      <div className="h-60 relative bg-white/5 rounded-lg">
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="text-center">
-                            <p className="text-white/60 mb-2">Performance Chart</p>
-                            <Button variant="outline" className="bg-transparent border-white/20 text-white">View Details</Button>
-                          </div>
-                        </div>
+                      <div className="h-60 relative">
+                        <ChartContainer
+                          className="h-60"
+                          config={{
+                            value: {
+                              theme: {
+                                light: "#10b981",
+                                dark: "#10b981"
+                              }
+                            },
+                            baseline: {
+                              theme: {
+                                light: "rgba(255,255,255,0.1)",
+                                dark: "rgba(255,255,255,0.1)"
+                              }
+                            }
+                          }}
+                        >
+                          <AreaChart data={performanceData}>
+                            <defs>
+                              <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+                                <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                              </linearGradient>
+                            </defs>
+                            <XAxis 
+                              dataKey="date"
+                              tick={{ fill: '#9ca3af' }}
+                              tickLine={{ stroke: '#4b5563' }}
+                              tickFormatter={(value) => new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                            />
+                            <YAxis 
+                              tick={{ fill: '#9ca3af' }}
+                              tickLine={{ stroke: '#4b5563' }}
+                              domain={['dataMin - 5', 'dataMax + 5']}
+                            />
+                            <Tooltip 
+                              content={({ active, payload }) => {
+                                if (active && payload && payload.length) {
+                                  return (
+                                    <div className="bg-nodo-dark border border-white/20 text-white p-2 rounded shadow-lg">
+                                      <p className="text-xs text-white/70">
+                                        {new Date(payload[0].payload.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                                      </p>
+                                      <p className="text-sm font-semibold">
+                                        Value: {payload[0].value}
+                                      </p>
+                                    </div>
+                                  );
+                                }
+                                return null;
+                              }}
+                            />
+                            <Area 
+                              type="monotone" 
+                              dataKey="value" 
+                              stroke="#10b981" 
+                              fillOpacity={1} 
+                              fill="url(#colorValue)" 
+                            />
+                          </AreaChart>
+                        </ChartContainer>
                       </div>
                     </TabsContent>
                     <TabsContent value="compare" className="p-6">
@@ -280,7 +370,6 @@ const Dashboard = () => {
                     opportunities to shift assets to maximize returns in constantly shifting market conditions.
                   </div>
                   
-                  {/* Activity list */}
                   <div className="space-y-4">
                     {activityData.map((item, index) => (
                       <div key={index} className="grid grid-cols-3 gap-4 border-t border-white/10 pt-4">
@@ -352,7 +441,7 @@ const Dashboard = () => {
                     <div className="mb-6">
                       <div className="text-sm flex justify-between mb-2">
                         <span className="text-white/60">Amount</span>
-                        <span className="text-white/60">Balance: 0 ($0.00)</span>
+                        <span className="text-white/60">Balance: {isWalletConnected ? '125,000' : '0'} USDC</span>
                       </div>
                       
                       <div className="flex items-center gap-2 p-3 bg-white/5 rounded-lg">
@@ -360,16 +449,34 @@ const Dashboard = () => {
                           type="text" 
                           placeholder="0.00" 
                           className="bg-transparent focus:outline-none w-full" 
+                          disabled={!isWalletConnected}
                         />
-                        <Button variant="outline" className="text-xs h-8 bg-white/10 border-white/20 hover:bg-white/20">
+                        <Button 
+                          variant="outline" 
+                          className="text-xs h-8 bg-white/10 border-white/20 hover:bg-white/20"
+                          disabled={!isWalletConnected}
+                        >
                           Max
                         </Button>
                       </div>
                     </div>
                     
-                    <Button className="w-full bg-nova/20 text-nova border border-nova/30 hover:bg-nova/40">
-                      Log in
-                    </Button>
+                    {!isWalletConnected ? (
+                      <Button 
+                        className="w-full flex items-center justify-center gap-2 bg-nova hover:bg-nova/90 text-white" 
+                        onClick={handleConnectWallet}
+                      >
+                        <Wallet className="w-4 h-4" />
+                        Connect Wallet
+                      </Button>
+                    ) : (
+                      <Button 
+                        className="w-full bg-nova hover:bg-nova/90 text-white"
+                        onClick={() => setShowDepositDialog(true)}
+                      >
+                        Deposit
+                      </Button>
+                    )}
                     
                     <div className="flex items-center gap-2 justify-center mt-4 text-white/60 text-xs">
                       <Clock className="w-4 h-4" />
@@ -382,6 +489,18 @@ const Dashboard = () => {
           </div>
         </div>
       </main>
+      
+      {/* Deposit Dialog */}
+      <DepositDialog 
+        open={showDepositDialog} 
+        onOpenChange={setShowDepositDialog}
+        selectedVault={selectedStrategy}
+        primaryColor={selectedStrategy.colorAccent}
+        onSubmit={(values) => {
+          console.log("Deposit submitted:", values);
+          setShowDepositDialog(false);
+        }}
+      />
       
       <Footer />
     </div>
