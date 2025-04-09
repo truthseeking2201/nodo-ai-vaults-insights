@@ -400,7 +400,7 @@ const Dashboard = () => {
                               content={({ active, payload }) => {
                                 if (active && payload && payload.length) {
                                   const date = payload[0].payload.date;
-                                  const value = payload[0].value;
+                                  const value = Number(payload[0].value);
                                   const initialValue = 100;
                                   const percentChange = ((value - initialValue) / initialValue) * 100;
                                   
