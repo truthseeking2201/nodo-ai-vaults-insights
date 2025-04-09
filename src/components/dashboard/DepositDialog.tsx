@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Label } from '@/components/ui/label';
 
 interface DepositDialogProps {
   open: boolean;
@@ -58,7 +59,7 @@ const DepositDialog: React.FC<DepositDialogProps> = ({
         
         {vaults.length > 0 && onVaultChange && (
           <div className="mb-4">
-            <FormLabel>Select Vault</FormLabel>
+            <Label className="text-sm font-medium">Select Vault</Label>
             <Select
               value={selectedVault.id}
               onValueChange={onVaultChange}
