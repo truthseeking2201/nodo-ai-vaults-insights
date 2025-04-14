@@ -1,9 +1,10 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { LineChart, ArrowRight, InfoIcon, Clock, ChevronDown, Sparkles, TrendingUp, Shield, ExternalLink, Wallet, ChevronLeft, ChevronRight, TrendingDown, ArrowUpRight } from 'lucide-react';
+import { LineChart, ArrowRight, InfoIcon, Clock, ChevronDown, ChevronLeft, ChevronRight, TrendingDown, ArrowUpRight, Wallet, Sparkles, TrendingUp, Shield } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DepositDialog from '@/components/dashboard/DepositDialog';
@@ -14,8 +15,9 @@ import { VaultOption } from '@/components/vaults/VaultSelector';
 import { useToast } from '@/hooks/use-toast';
 import TransactionHistory from '@/components/TransactionHistory';
 import BalanceCard from '@/components/dashboard/BalanceCard';
+import DashboardVaultSelector from '@/components/dashboard/DashboardVaultSelector';
 
-// Strategy data
+// Strategy data with enhanced color theming
 const strategies = [
   {
     id: "yield-cosmos",
@@ -27,6 +29,10 @@ const strategies = [
     changePercent: "+0.91%",
     color: "bg-aero/20 text-aero",
     colorAccent: "aero",
+    primaryColor: "amber-500",
+    gradientFrom: "from-amber-500/90",
+    gradientTo: "to-amber-600/70",
+    chartColor: "#D97706",
     tvl: "5.43M USDC",
     tvlValue: "$5.43M"
   },
@@ -40,6 +46,10 @@ const strategies = [
     changePercent: "+1.35%",
     color: "bg-nova/20 text-nova",
     colorAccent: "nova",
+    primaryColor: "nova",
+    gradientFrom: "from-nova/90",
+    gradientTo: "to-nova/70",
+    chartColor: "#F97316",
     tvl: "6.21M USDC",
     tvlValue: "$6.21M"
   },
@@ -53,6 +63,10 @@ const strategies = [
     changePercent: "+2.18%",
     color: "bg-orion/20 text-orion",
     colorAccent: "orion",
+    primaryColor: "orion",
+    gradientFrom: "from-orion/90",
+    gradientTo: "to-orion/70",
+    chartColor: "#F59E0B",
     tvl: "4.87M USDC",
     tvlValue: "$4.87M"
   }
@@ -265,14 +279,14 @@ const Dashboard = () => {
                 
                 {!isWalletConnected ? (
                   <Button 
-                    className="bg-nova hover:bg-nova/90 text-white flex items-center gap-2" 
+                    className={`bg-${selectedStrategy.colorAccent} hover:bg-${selectedStrategy.colorAccent}/90 text-white flex items-center gap-2`}
                     onClick={handleConnectWallet}
                   >
                     Connect Wallet <Wallet className="w-4 h-4" />
                   </Button>
                 ) : (
                   <Button 
-                    className="bg-nova hover:bg-nova/90 text-white flex items-center gap-2" 
+                    className={`bg-${selectedStrategy.colorAccent} hover:bg-${selectedStrategy.colorAccent}/90 text-white flex items-center gap-2`}
                     onClick={handleDepositClick}
                   >
                     Deposit <Wallet className="w-4 h-4" />
@@ -282,14 +296,14 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Vault Selection Cards - Simplified */}
+          {/* Enhanced Vault Selection Cards with unique color themes */}
           <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
             {strategies.map((strategy, index) => (
               <Card 
                 key={strategy.id}
                 className={`transition-all cursor-pointer border h-24 ${
                   selectedStrategyIndex === index 
-                    ? `border-${strategy.colorAccent} bg-${strategy.colorAccent}/10` 
+                    ? `border-${strategy.colorAccent} bg-${strategy.colorAccent}/10 shadow-[0_0_15px_rgba(var(--${strategy.colorAccent}),0.2)]` 
                     : 'border-white/10 bg-nodo-dark hover:bg-white/5'
                 }`}
                 onClick={() => setSelectedStrategyIndex(index)}
@@ -299,7 +313,7 @@ const Dashboard = () => {
                     {strategy.icon}
                   </div>
                   <div>
-                    <h3 className="font-bold">{strategy.name}</h3>
+                    <h3 className={`font-bold ${selectedStrategyIndex === index ? `text-${strategy.colorAccent}` : ''}`}>{strategy.name}</h3>
                     <span className="text-xs text-white/60">{strategy.type}</span>
                   </div>
                 </div>
@@ -309,23 +323,23 @@ const Dashboard = () => {
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2">
-              {/* Strategy overview */}
-              <Card className="glass-card mb-6 border border-white/10 overflow-hidden">
+              {/* Strategy overview with themed colors */}
+              <Card className={`glass-card mb-6 border ${selectedStrategyIndex === 0 ? 'border-amber-500/30' : selectedStrategyIndex === 1 ? 'border-nova/30' : 'border-orion/30'} overflow-hidden`}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
                   <div>
                     <div className="text-sm text-white/60 mb-1">New strategy</div>
-                    <h3 className="text-lg font-medium mb-1">{selectedStrategy.name}</h3>
+                    <h3 className={`text-lg font-medium mb-1 text-${selectedStrategy.colorAccent}`}>{selectedStrategy.name}</h3>
                     <div className="text-xs text-white/50">Requires more data</div>
                   </div>
                   <div>
                     <div className="text-sm text-white/60 mb-1">Current APY</div>
-                    <div className="text-3xl font-bold text-white mb-1">{selectedStrategy.apy}</div>
+                    <div className={`text-3xl font-bold text-${selectedStrategy.colorAccent} mb-1`}>{selectedStrategy.apy}</div>
                     <div className="text-xs text-green-500 flex items-center">
                       {selectedStrategy.changePercent} vs Medium DeFi Yield
                     </div>
                   </div>
                 </div>
-                <div className="px-6 py-4 border-t border-white/10">
+                <div className={`px-6 py-4 border-t ${selectedStrategyIndex === 0 ? 'border-amber-500/10' : selectedStrategyIndex === 1 ? 'border-nova/10' : 'border-orion/10'}`}>
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="text-xl font-bold">{selectedStrategy.tvl}</div>
@@ -335,8 +349,8 @@ const Dashboard = () => {
                 </div>
               </Card>
               
-              {/* Enhanced Performance Metrics */}
-              <Card className="glass-card mb-6 border border-white/10">
+              {/* Enhanced Performance Metrics with themed colors */}
+              <Card className={`glass-card mb-6 border ${selectedStrategyIndex === 0 ? 'border-amber-500/30' : selectedStrategyIndex === 1 ? 'border-nova/30' : 'border-orion/30'}`}>
                 <div className="p-6">
                   <h3 className="text-lg font-bold mb-4">Your Performance</h3>
                   
@@ -371,7 +385,7 @@ const Dashboard = () => {
                   </div>
                 </div>
                 
-                <div className="border-t border-white/10">
+                <div className={`border-t ${selectedStrategyIndex === 0 ? 'border-amber-500/10' : selectedStrategyIndex === 1 ? 'border-nova/10' : 'border-orion/10'}`}>
                   <Tabs defaultValue="historic" className="w-full">
                     <div className="px-6 pt-4">
                       <TabsList className="bg-white/5 grid w-full grid-cols-2">
@@ -399,8 +413,8 @@ const Dashboard = () => {
                           config={{
                             value: {
                               theme: {
-                                light: "#10b981",
-                                dark: "#10b981"
+                                light: selectedStrategy.chartColor,
+                                dark: selectedStrategy.chartColor
                               }
                             },
                             baseline: {
@@ -413,9 +427,9 @@ const Dashboard = () => {
                         >
                           <AreaChart data={performanceData}>
                             <defs>
-                              <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
-                                <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                              <linearGradient id={`colorValue-${selectedStrategy.id}`} x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor={selectedStrategy.chartColor} stopOpacity={0.3} />
+                                <stop offset="95%" stopColor={selectedStrategy.chartColor} stopOpacity={0} />
                               </linearGradient>
                             </defs>
                             <XAxis 
@@ -444,7 +458,7 @@ const Dashboard = () => {
                                   );
                                   
                                   return (
-                                    <div className="bg-nodo-dark border border-white/20 text-white p-3 rounded shadow-lg">
+                                    <div className={`bg-nodo-dark border border-${selectedStrategy.colorAccent}/20 text-white p-3 rounded shadow-lg`}>
                                       <p className="text-xs text-white/70 mb-1">
                                         {new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                                       </p>
@@ -469,9 +483,9 @@ const Dashboard = () => {
                             <Area 
                               type="monotone" 
                               dataKey="value" 
-                              stroke="#10b981" 
+                              stroke={selectedStrategy.chartColor} 
                               fillOpacity={1} 
-                              fill="url(#colorValue)" 
+                              fill={`url(#colorValue-${selectedStrategy.id})`} 
                             />
                           </AreaChart>
                         </ChartContainer>
@@ -489,15 +503,15 @@ const Dashboard = () => {
                 </div>
               </Card>
               
-              {/* Transaction history - Now more prominent */}
-              <Card className="glass-card mb-6 border border-white/10">
+              {/* Transaction history with themed colors */}
+              <Card className={`glass-card mb-6 border ${selectedStrategyIndex === 0 ? 'border-amber-500/30' : selectedStrategyIndex === 1 ? 'border-nova/30' : 'border-orion/30'}`}>
                 <div className="p-6">
                   <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-bold">Transaction History</h3>
                     <Button
                       variant="outline"
                       size="sm"
-                      className="bg-transparent border-white/20 text-white"
+                      className={`bg-transparent border-${selectedStrategy.colorAccent}/30 text-${selectedStrategy.colorAccent}`}
                       onClick={() => setShowTransactionHistory(!showTransactionHistory)}
                     >
                       {showTransactionHistory ? "Hide Details" : "Show Details"}
@@ -771,7 +785,7 @@ const Dashboard = () => {
             
             {/* Right sidebar */}
             <div className="lg:col-span-1">
-              {/* Balance Card */}
+              {/* Balance Card with themed colors */}
               <BalanceCard 
                 initialInvestment={userPortfolio.initialInvestment}
                 currentValue={userPortfolio.currentValue}
@@ -779,11 +793,12 @@ const Dashboard = () => {
                 profitLossPercentage={userPortfolio.profitLossPercentage}
                 onDeposit={handleDepositClick}
                 onWithdraw={handleWithdrawClick}
+                colorAccent={selectedStrategy.colorAccent}
               />
               
-              {/* Deposit panel */}
+              {/* Deposit panel with themed colors */}
               {showDepositPanel && (
-                <Card className="glass-card border border-white/10 sticky top-6 mt-6">
+                <Card className={`glass-card border ${selectedStrategyIndex === 0 ? 'border-amber-500/30' : selectedStrategyIndex === 1 ? 'border-nova/30' : 'border-orion/30'} sticky top-6 mt-6`}>
                   <div className="p-6">
                     <div className="flex justify-between items-center mb-4">
                       <h3 className="text-lg font-bold">Quick Deposit</h3>
@@ -832,7 +847,7 @@ const Dashboard = () => {
                     
                     {!isWalletConnected ? (
                       <Button 
-                        className="w-full flex items-center justify-center gap-2 bg-nova hover:bg-nova/90 text-white" 
+                        className={`w-full flex items-center justify-center gap-2 bg-${selectedStrategy.colorAccent} hover:bg-${selectedStrategy.colorAccent}/90 text-white`}
                         onClick={handleConnectWallet}
                       >
                         <Wallet className="w-4 h-4" />
@@ -840,7 +855,7 @@ const Dashboard = () => {
                       </Button>
                     ) : (
                       <Button 
-                        className="w-full bg-nova hover:bg-nova/90 text-white"
+                        className={`w-full bg-${selectedStrategy.colorAccent} hover:bg-${selectedStrategy.colorAccent}/90 text-white`}
                         onClick={() => setShowDepositDialog(true)}
                       >
                         Deposit
@@ -859,7 +874,7 @@ const Dashboard = () => {
         </div>
       </main>
       
-      {/* Deposit Dialog */}
+      {/* Deposit Dialog with themed colors */}
       <DepositDialog 
         open={showDepositDialog} 
         onOpenChange={setShowDepositDialog}
@@ -870,7 +885,7 @@ const Dashboard = () => {
         onSubmit={handleVaultSubmit}
       />
       
-      {/* Withdrawal Dialog */}
+      {/* Withdrawal Dialog with themed colors */}
       <WithdrawalDialog 
         open={showWithdrawalDialog} 
         onOpenChange={setShowWithdrawalDialog}
@@ -880,6 +895,7 @@ const Dashboard = () => {
           iconBg: selectedStrategy.color
         }}
         userBalance={userPortfolio.currentValue}
+        colorAccent={selectedStrategy.colorAccent}
       />
       
       <Footer />
