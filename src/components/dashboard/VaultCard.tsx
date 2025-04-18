@@ -20,41 +20,71 @@ interface VaultCardProps {
 }
 
 const VaultCard: React.FC<VaultCardProps> = ({ vault, onOpenDepositDialog, primaryColor }) => {
+  const getVaultStyles = () => {
+    switch (primaryColor) {
+      case 'nova':
+        return {
+          border: 'border-nova/30',
+          gradient: 'from-nova/20 via-nova/10 to-transparent',
+          hover: 'hover:border-nova/50 hover:bg-nova/5',
+          button: 'bg-nova hover:bg-nova/90'
+        };
+      case 'orion':
+        return {
+          border: 'border-orion/30',
+          gradient: 'from-orion/20 via-orion/10 to-transparent',
+          hover: 'hover:border-orion/50 hover:bg-orion/5',
+          button: 'bg-orion hover:bg-orion/90'
+        };
+      case 'aero':
+        return {
+          border: 'border-amber-500/30',
+          gradient: 'from-amber-500/20 via-amber-500/10 to-transparent',
+          hover: 'hover:border-amber-500/50 hover:bg-amber-500/5',
+          button: 'bg-amber-500 hover:bg-amber-600'
+        };
+      default:
+        return {
+          border: 'border-white/10',
+          gradient: 'from-white/10 via-white/5 to-transparent',
+          hover: 'hover:border-white/20 hover:bg-white/5',
+          button: 'bg-primary hover:bg-primary/90'
+        };
+    }
+  };
+
+  const styles = getVaultStyles();
+
   return (
     <Card 
-      key={vault.id} 
-      className="glass-card p-4 rounded-xl card-hover-effect group transition-all duration-300"
+      className={`glass-card p-4 rounded-xl transition-all duration-300 border ${styles.border} ${styles.hover}`}
     >
       <div className="grid grid-cols-1 md:grid-cols-6 gap-4 items-center">
+        {/* Left section with vault info */}
         <div className="md:col-span-2">
           <div className="flex items-center">
-            <div 
-              className={`w-10 h-10 rounded-full ${vault.iconBg} flex items-center justify-center mr-3 relative group-hover:shadow-lg transition-shadow duration-300`}
-            >
-              <div className="absolute inset-0 rounded-full bg-white/10 opacity-0 group-hover:opacity-100 scale-0 group-hover:scale-100 transition-all duration-300"></div>
+            <div className={`w-10 h-10 rounded-full ${vault.iconBg} flex items-center justify-center mr-3 relative`}>
+              <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${styles.gradient} opacity-50`}></div>
               {vault.icon}
             </div>
             <div>
-              <div className="font-bold relative group-hover:text-gradient-nova transition-all duration-300">
+              <div className="font-bold relative">
                 {vault.title}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-nova/40 group-hover:w-full transition-all duration-300"></span>
               </div>
-              <div className="text-xs text-white/60">Nodo vault - Active since {vault.activeDate}</div>
+              <div className="text-xs text-white/60">Active since {vault.activeDate}</div>
             </div>
           </div>
         </div>
         
+        {/* Center section with stats */}
         <div>
           <div className="text-xs text-white/60">Allocation</div>
-          <div className="font-semibold font-mono group-hover:text-white transition-colors duration-300">{vault.allocation}</div>
+          <div className="font-semibold font-mono">{vault.allocation}</div>
         </div>
         
         <div>
           <div className="text-xs text-white/60">Current APY</div>
-          <div className="font-semibold text-green-400 font-mono relative group">
-            {vault.apy}
-            <span className="absolute -right-2 top-0.5 w-1.5 h-1.5 rounded-full bg-green-400 scale-0 group-hover:scale-100 opacity-0 group-hover:opacity-100 transition-all duration-300"></span>
-          </div>
+          <div className="font-semibold text-green-400 font-mono">{vault.apy}</div>
         </div>
         
         <div>
@@ -62,24 +92,21 @@ const VaultCard: React.FC<VaultCardProps> = ({ vault, onOpenDepositDialog, prima
           <div className="font-semibold font-mono">{vault.profit}</div>
         </div>
         
+        {/* Right section with buttons */}
         <div className="flex gap-2">
           <Button 
             variant="outline" 
-            className="w-full bg-transparent border border-white/20 text-white hover:bg-white/10 relative overflow-hidden group/btn"
+            className="w-full bg-transparent border border-white/20 text-white hover:bg-white/10"
           >
-            <span className="relative z-10">Manage</span>
-            <span className="absolute inset-0 bg-white/5 opacity-0 group-hover/btn:opacity-100 transition-opacity"></span>
+            Manage
           </Button>
           <Button 
-            className={`w-full bg-${primaryColor} hover:bg-${primaryColor}/90 text-white flex items-center gap-2 relative overflow-hidden group/btn`}
+            className={`w-full ${styles.button} text-white flex items-center gap-2`}
             onClick={() => onOpenDepositDialog(vault)}
           >
-            <span className="relative z-10 flex items-center gap-1">
-              <Wallet size={16} className="group-hover/btn:rotate-12 transition-transform duration-300" />
-              <span>Deposit</span>
-            </span>
-            <ChevronRight size={16} className="w-4 h-4 opacity-0 group-hover/btn:opacity-100 group-hover/btn:translate-x-1 transition-all duration-300" />
-            <span className="absolute inset-0 bg-white/10 opacity-0 group-hover/btn:opacity-100 transition-opacity"></span>
+            <Wallet size={16} />
+            <span>Deposit</span>
+            <ChevronRight size={16} className="ml-auto" />
           </Button>
         </div>
       </div>
