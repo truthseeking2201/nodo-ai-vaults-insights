@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { VaultOption } from '../vaults/VaultSelector';
@@ -8,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { apply3DEffect, fadeIn, staggerFadeIn } from '@/lib/animations';
 
-// Enhanced vault data structure with more detailed information
 const vaults: VaultOption[] = [
   {
     id: "vault-111",
@@ -40,9 +38,9 @@ const vaults: VaultOption[] = [
     id: "vault-309",
     name: "Nova Strategy",
     type: "Market Maker",
-    icon: <div className="w-4 h-4 bg-nova rounded-full"></div>,
-    color: "bg-nova/20",
-    colorAccent: "nova",
+    icon: <div className="w-4 h-4 bg-emerald-500 rounded-full"></div>,
+    color: "bg-emerald-500/20",
+    colorAccent: "emerald",
     status: "maintenance",
     securityScore: 92,
     lastAudit: "February 5, 2025",
@@ -60,21 +58,17 @@ export function VaultTabs({ selectedVault, onSelectVault }: VaultTabsProps) {
   const [hoveredVault, setHoveredVault] = useState<string | null>(null);
   const { toast } = useToast();
 
-  // Initialize animations when component mounts
   useEffect(() => {
-    // Apply animations to tab list
     const tabsElement = document.querySelector('.tabs-container');
     if (tabsElement) {
       fadeIn(tabsElement, 800);
     }
     
-    // Apply staggered animations to tab contents
     const contentElements = document.querySelectorAll('.tab-content');
     if (contentElements.length > 0) {
       staggerFadeIn(contentElements, 100);
     }
     
-    // Apply 3D effect to vault details cards
     const detailsCards = document.querySelectorAll('.vault-details-card');
     detailsCards.forEach(card => {
       apply3DEffect(card, 5);
@@ -82,9 +76,8 @@ export function VaultTabs({ selectedVault, onSelectVault }: VaultTabsProps) {
   }, []);
 
   const handleInfoClick = (vaultId: string, e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent triggering the tab selection
+    e.stopPropagation();
     
-    // Find the vault data to show in the toast
     const vault = vaults.find(v => v.id === vaultId);
     
     if (vault) {
@@ -139,6 +132,13 @@ export function VaultTabs({ selectedVault, onSelectVault }: VaultTabsProps) {
           activeBorder: "border-amber-500",
           hoverBg: "bg-amber-500/10",
           glowColor: "shadow-neon-aero"
+        };
+      case 'emerald':
+        return {
+          activeGradient: "from-emerald-500/90 to-emerald-600/80",
+          activeBorder: "border-emerald-500",
+          hoverBg: "bg-emerald-500/10",
+          glowColor: "shadow-neon-emerald"
         };
       default:
         return {
@@ -237,7 +237,6 @@ export function VaultTabs({ selectedVault, onSelectVault }: VaultTabsProps) {
                     <Info className="w-4 h-4" />
                   </Button>
                   
-                  {/* Animated background effect */}
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 animate-slide-right"></div>
                 </>
               )}
@@ -275,7 +274,6 @@ export function VaultTabs({ selectedVault, onSelectVault }: VaultTabsProps) {
                     {vault.riskLevel}
                   </span>
                   
-                  {/* Risk indicator */}
                   <div className="mt-3 relative h-1 bg-white/10 rounded-full overflow-hidden">
                     <div 
                       className={`absolute top-0 left-0 h-full rounded-full ${
@@ -293,7 +291,6 @@ export function VaultTabs({ selectedVault, onSelectVault }: VaultTabsProps) {
                     {vault.performanceRating}
                   </span>
                   
-                  {/* Star rating visualization */}
                   <div className="mt-2 flex">
                     {["A+", "A", "A-"].includes(vault.performanceRating as string) ? (
                       <>
@@ -319,7 +316,6 @@ export function VaultTabs({ selectedVault, onSelectVault }: VaultTabsProps) {
                     <span className="font-medium">{vault.securityScore}/100</span>
                   </div>
                   
-                  {/* Security score progress bar */}
                   <div className="mt-3 h-1 w-full bg-white/20 rounded-full overflow-hidden">
                     <div 
                       className={`h-full ${vault.securityScore > 95 ? 'bg-emerald-500' : 'bg-amber-500'} transition-all duration-1000 ease-out`}

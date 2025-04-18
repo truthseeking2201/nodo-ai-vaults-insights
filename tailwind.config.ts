@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -85,6 +84,11 @@ export default {
 					light: "#FBBF24", // Light Yellow
 					dark: "#92400E", // Dark Yellow
 				},
+				emerald: {
+					DEFAULT: "#10B981", // Emerald green
+					light: "#6EE7B7", // Light emerald
+					dark: "#047857", // Dark emerald
+				},
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -127,6 +131,10 @@ export default {
 				'neon-pulse': {
 					'0%, 100%': { boxShadow: '0 0 5px rgba(155, 135, 245, 0.8), 0 0 10px rgba(155, 135, 245, 0.5)' },
 					'50%': { boxShadow: '0 0 10px rgba(155, 135, 245, 1), 0 0 20px rgba(155, 135, 245, 0.8)' }
+				},
+				'neon-emerald': {
+					'0%, 100%': { boxShadow: '0 0 5px rgba(16, 185, 129, 0.8), 0 0 10px rgba(16, 185, 129, 0.5)' },
+					'50%': { boxShadow: '0 0 10px rgba(16, 185, 129, 1), 0 0 20px rgba(16, 185, 129, 0.8)' }
 				}
 			},
 			animation: {
@@ -136,7 +144,8 @@ export default {
 				'float': 'float 6s infinite ease-in-out',
 				'scale-up': 'scale-up 0.3s ease-out forwards',
 				'shimmer': 'shimmer 3s infinite linear',
-				'neon-pulse': 'neon-pulse 2s infinite'
+				'neon-pulse': 'neon-pulse 2s infinite',
+				'neon-emerald': 'neon-emerald 2s infinite'
 			},
 			backgroundImage: {
 				'neo-grid': 'linear-gradient(rgba(249, 115, 22, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(249, 115, 22, 0.1) 1px, transparent 1px)',
@@ -150,6 +159,7 @@ export default {
 				'neon-nova': '0 0 5px rgba(249, 115, 22, 0.8), 0 0 10px rgba(249, 115, 22, 0.5)',
 				'neon-orion': '0 0 5px rgba(245, 158, 11, 0.8), 0 0 10px rgba(245, 158, 11, 0.5)',
 				'neon-aero': '0 0 5px rgba(217, 119, 6, 0.8), 0 0 10px rgba(217, 119, 6, 0.5)',
+				'neon-emerald': '0 0 5px rgba(16, 185, 129, 0.8), 0 0 10px rgba(16, 185, 129, 0.5)',
 			},
 		}
 	},
